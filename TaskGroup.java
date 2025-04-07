@@ -2,7 +2,9 @@ import java.util.ArrayList;
 
 public class TaskGroup {
     String name;
+    
 	ArrayList<Task> tasks = new ArrayList<>();
+    
 	Time startDate;
 	Time dueDate;
 	Double priority;
