@@ -1,7 +1,7 @@
 import java.time.*;
 import java.time.format.*;
 
-public class Time {
+public class Time implements Comparable<Time> {
     final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     long time; //in milliseconds since epoch
@@ -33,5 +33,10 @@ public class Time {
 
     public String toString() {
         return date.format(FORMATTER);
+    }
+
+    public int compareTo(Time o) {
+        //test;
+        return (int) (time - o.time);
     }
 }
