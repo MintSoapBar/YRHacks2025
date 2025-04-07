@@ -4,16 +4,16 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Time {
-    final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     long time; //in milliseconds since epoch
 
-    ZonedDateTime localDateTime;
+    ZonedDateTime date;
 
     public void setTime(long t) {
         time = t;
         
-        localDateTime = Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault());
+        date = Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault());
     }
 
     //constructor
@@ -24,12 +24,12 @@ public class Time {
     public static void main(String[] args) {
         Time t = new Time(System.currentTimeMillis());
         System.out.println(t);
-        System.out.println(t.localDateTime.getMonth());
-        System.out.println(t.localDateTime.getDayOfMonth());
-        System.out.println(t.localDateTime.getYear());
+        System.out.println(t.date.getMonth());
+        System.out.println(t.date.getDayOfMonth());
+        System.out.println(t.date.getYear());
     }
 
     public String toString() {
-        return localDateTime.format(formatter);
+        return date.format(formatter);
     }
 }
