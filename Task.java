@@ -1,5 +1,5 @@
 
 public class Task {
     Time dueDate;
-    int length;
+    long length;
 }
