@@ -1,5 +1,7 @@
 public class Activity {
     String name;
+    int id;
+    
     Time start;
     long length;
     Time end;
