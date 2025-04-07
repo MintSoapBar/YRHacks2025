@@ -37,7 +37,6 @@ public class Time implements Comparable<Time> {
     }
 
     public int compareTo(Time o) {
-        //test;
         return (int) (time - o.time);
     }
 }
