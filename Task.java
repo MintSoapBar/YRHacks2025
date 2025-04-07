@@ -1,6 +1,8 @@
 
 public class Task {
     String name;
+    int id;
+    
     Time dueDate;
     long length;
 

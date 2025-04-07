@@ -26,6 +26,7 @@ public class Time implements Comparable<Time> {
     public static void main(String[] args) {
         Time t = new Time(System.currentTimeMillis());
         System.out.println(t);
+        System.out.println(t.date.getHour());
         System.out.println(t.date.getMonth());
         System.out.println(t.date.getDayOfMonth());
         System.out.println(t.date.getYear());

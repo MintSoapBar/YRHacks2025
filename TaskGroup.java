@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class TaskGroup {
     String name;
+    int id;
 
 	ArrayList<Task> tasks = new ArrayList<>();
     
