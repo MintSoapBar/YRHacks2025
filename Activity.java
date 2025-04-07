@@ -8,6 +8,6 @@ public class Activity {
         this.name = name;
         this.start = start;
         this.length = length;
-        // this.end = new Time(start.getHour(), start.getMinute() + length);
+        this.end = new Time(start.time + length);
     }
 }
