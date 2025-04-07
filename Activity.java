@@ -1,11 +1,10 @@
-
 public class Activity {
     String name;
     Time start;
-    int length;
+    long length;
     Time end;
 
-    public Activity(String name, Time start, int length) {
+    public Activity(String name, Time start, long length) {
         this.name = name;
         this.start = start;
         this.length = length;
