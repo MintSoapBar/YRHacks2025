@@ -30,6 +30,6 @@ public class Time {
     }
 
     public String toString() {
-        return date.format(formatter);
+        return date.format(FORMATTER);
     }
 }
