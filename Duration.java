@@ -21,7 +21,7 @@ public class Duration {
             textLong = time/second + " second" + (time >= 2*second || time < second? "s": "");
             textShort = time/second + "s";
         } else if (time < hour) {
-            textLong = time/minute + " minutes" + (time >= 2*minute? "s": "");
+            textLong = time/minute + " minute" + (time >= 2*minute? "s": "");
             textShort = time/minute + "min.";
         } else if (time < day) {
             textLong = time/hour + " hour" + (time >= 2*hour? "s": "");
@@ -46,7 +46,16 @@ public class Duration {
     }
 
     public static void main(String[] args) {
+        System.out.println(new Duration(123));
+        System.out.println(new Duration(1234));
         System.out.println(new Duration(12345));
+        System.out.println(new Duration(123456));
+        System.out.println(new Duration(1234567));
+        System.out.println(new Duration(12345678));
+        System.out.println(new Duration(123456789));
+        System.out.println(new Duration(1234567890));
+        System.out.println(new Duration(12345678901l));
+        System.out.println(new Duration(123456789012l));
     }
 
     public String toString() {
