@@ -6,18 +6,18 @@ import java.time.format.DateTimeFormatter;
 public class Time {
     final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    long millis; //in milliseconds since epoch
+    long time; //in milliseconds since epoch
 
     ZonedDateTime date;
 
     public void setTime(long t) {
-        millis = t;
+        time = t;
         
-        date = Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault());
+        date = Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault());
     }
 
     public Time add(Time o) {
-        return new Time(millis + o.millis);
+        return new Time(time + o.time);
     }
 
     //constructor
