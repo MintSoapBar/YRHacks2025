@@ -1,5 +1,4 @@
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,7 +22,11 @@ public class Time {
     }
 
     public static void main(String[] args) {
-        System.out.println(new Time(System.currentTimeMillis()));
+        Time t = new Time(System.currentTimeMillis());
+        System.out.println(t);
+        System.out.println(t.localDateTime.getMonth());
+        System.out.println(t.localDateTime.getDayOfMonth());
+        System.out.println(t.localDateTime.getYear());
     }
 
     public String toString() {
