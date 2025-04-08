@@ -1,3 +1,5 @@
+package classes;
+
 public class Activity {
     String name;
     int id;

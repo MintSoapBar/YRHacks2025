@@ -1,3 +1,4 @@
+package classes;
 
 //class to convert milliseconds time into human readable time
 //eg displays 12000ms as 12 seconds
