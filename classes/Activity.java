@@ -24,7 +24,6 @@ public class Activity extends TimeBlock implements Comparable<Activity> {
 
 	public void createButtons() {
         scheduleButton = new Button(Driver.timeBlockLeft, Driver.activityListGap, Driver.timeBlockWidth, Driver.timeBlockHeight, new Color(255, 255, 255), name);
-        Driver.scheduleScrollingFrame.addChild(scheduleButton);
 
         activityListButton = new Button(
 			Driver.activityListLeft, 
@@ -32,7 +31,7 @@ public class Activity extends TimeBlock implements Comparable<Activity> {
 			Driver.activityListWidth, 
 			Driver.activityListHeight, 
 			new Color(255, 255, 255), 
-			name + " - " + byteToDays(daysOfWeek) + " - " + startTime + "-" + endTime
+			name + " - " + byteToDays(daysOfWeek) + " - " + Time.interpretLong(startTime) + "-" + Time.interpretLong(endTime)
 			);
     }
 
@@ -44,16 +43,16 @@ public class Activity extends TimeBlock implements Comparable<Activity> {
 		createButtons();
 	}
 
-	@Override
-	public String toString() {
-		return String.format("Name: %s%nDescription: %s%nStart Time: %02d:%02d%nEnd Time: %02d:%02d%nDays of Week: %s%n", 
-			name, description, startTime / 3600000, startTime / 60000 % 60, endTime / 3600000, endTime / 60000 % 60, Integer.toBinaryString(daysOfWeek));
-	}
-
 	public static void main(String[] args) {
 		// Example usage
 		Activity activity = new Activity("Morning Run", "A refreshing morning run.", System.currentTimeMillis(), System.currentTimeMillis() + 3600000, (byte) 0b1111110);
 		System.out.println(activity);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Name: %s%nDescription: %s%nStart Time: %02d:%02d%nEnd Time: %02d:%02d%nDays of Week: %s%n", 
+			name, description, startTime / 3600000, startTime / 60000 % 60, endTime / 3600000, endTime / 60000 % 60, Integer.toBinaryString(daysOfWeek));
 	}
 	
 	public int compareTo(Activity o) {
