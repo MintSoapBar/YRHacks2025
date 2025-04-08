@@ -1,3 +1,5 @@
+package classes
+
 public class TimeBlock {
 	String name;
 	String description;

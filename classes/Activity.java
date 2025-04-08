@@ -3,7 +3,7 @@ package classes;
 public class Activity extends TimeBlock {
 	long startTime; // in milliseconds
 	long endTime; // in milliseconds
-	static byte daysOfWeek; // 0-6 for Sun-Sat, 7 for all days
+	byte daysOfWeek; // 0-6 for Sun-Sat, 7 for all days
 
 	// Constructor
 	public Activity(String name, String description, long startTime, long endTime, byte daysOfWeek) {

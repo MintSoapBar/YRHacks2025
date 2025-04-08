@@ -21,7 +21,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static int scrollOffsetY = 0;
 
     static ArrayList<TaskGroup> taskGroups = new ArrayList<>();
-    static ArrayList<Task> tasks = new ArrayList<>(); 
+    static ArrayList<TimeBlock> timeBlocks = new ArrayList<>(); 
     static ArrayList<Task> schedule = new ArrayList<>(); 
 
     static Frame mainFrame = new Frame(0, 0, screenWidth, screenHeight);
@@ -149,6 +149,9 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         // System.out.println(taskGroups.get(0).getTask(0));
         schedule.add(taskGroups.get(0).getTask(0));
         schedule.add(taskGroups.get(0).getTask(1));
+        timeBlocks.add(new Activity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b0010000));
+        timeBlocks.add(taskGroups.get(0).getTask(0));
+        timeBlocks.add(taskGroups.get(0).getTask(1));
 
         Collections.sort(schedule);
 
@@ -162,7 +165,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         long currentTime = System.currentTimeMillis();
         long oneHourMillis = 3600000; // One hour in milliseconds
 
-        for (TaskGroup tg : taskGroups) {
+        for (TimeBlock t : timeBlocks) {
             ArrayList<Task> tasks = tg.getTasks();
             tasks.sort(Comparator.comparingDouble(Task::getPriority).reversed());
 
