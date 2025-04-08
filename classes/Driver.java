@@ -11,22 +11,28 @@ import java.time.ZoneOffset;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class Driver extends JPanel implements MouseListener, KeyListener, Runnable  {
+public class Driver extends JPanel implements MouseListener, KeyListener, Runnable {
     final static int FPS = 60;
+    final static int TABS_NUM = 2;
 
-    static int screenWidth = 400;
+    static int screenWidth = 1000;
     static int screenHeight = 600;
 
-    static int scrollOffsetX = 0;
-    static int scrollOffsetY = 0;
+    static int tabHeight = 20;
+    static int tabWidth = 80;
+    static int tabGap = 5;
 
     static ArrayList<TaskGroup> taskGroups = new ArrayList<>();
 
-    static ArrayList<Task> schedule = new ArrayList<>(); 
+    static int currentTab = 0;
+    final static double SCROLL_ALPHA = 0.3;
+    static Point[] scrollOffsets = new Point[TABS_NUM];
+    static Point[] targetScrollOffsets = new Point[TABS_NUM];
+    static String[] tabNames = new String[] {"Schedule", "Task List"};
+    static Button[] tabButtons = new Button[TABS_NUM];
+    static Frame[] tabFrames = new Frame[TABS_NUM];
 
-    static Frame mainFrame = new Frame(0, 0, screenWidth, screenHeight);
-    static Button b1;
-    static Frame f1;
+    static BufferedImage[] backgrounds = new BufferedImage[2];
 
     public void run() {
         while(true) {
@@ -43,25 +49,30 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
       
         g.drawString(System.currentTimeMillis() + "", 10, 25);
 
-        mainFrame.render(g, scrollOffsetX, scrollOffsetY);
-        f1.x = (int) (System.currentTimeMillis()/10 % 100 + 10);
-        
-        int x = 0;
-        int y = 0;
-        
-        Point mousePos = getMousePosition();
-        if (mousePos != null) {
-            x = (int) mousePos.getX();
-            y = (int) mousePos.getY();
+        for (int i = 0; i < TABS_NUM; i++) {
+            scrollOffsets[i].x = Math2.lerp(scrollOffsets[i].x, targetScrollOffsets[i].x, SCROLL_ALPHA);
+            scrollOffsets[i].y = Math2.lerp(scrollOffsets[i].y, targetScrollOffsets[i].y, SCROLL_ALPHA);
         }
 
-        g.drawString(x + "", 10, 300);
-        g.drawString(y + "", 40, 300);
-        g.drawString(b1.isPosInBounds(x, y) + "", 10, 400);
+        int scrollX = scrollOffsets[currentTab].x;
+        int scrollY = scrollOffsets[currentTab].y;
+        tabFrames[currentTab].render(g, scrollX, scrollY);
+
+        for (Frame f: tabFrames[0].frames) {
+            f.x = (int) (System.currentTimeMillis() % 1000 / 10 + 10);
+        }
+
+        for (int i = 0; i < TABS_NUM; i++) {
+            Button b = tabButtons[i];
+            b.backgroundColor = i == currentTab? new Color(200, 200, 200): new Color(255, 255, 255);
+            b.render(g);
+        }
+        
+        Point mousePos = getMousePosition();
     }
 
     public Driver() {
-        setPreferredSize(new Dimension(400,600));
+        setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setFocusable(true);
         addKeyListener(this);
         addMouseListener(this);
@@ -69,7 +80,21 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         thread.start();
     }
 
-    public static void main(String[] arg) throws IOException {
+    public static void main(String[] arg) {
+        try {
+            backgrounds[0] = ImageIO.read(new File("images/background0.jpg"));
+            backgrounds[1] = ImageIO.read(new File("images/background0.jpg"));
+        } catch (IOException e) {
+            System.out.println("Unable to load background image(s)");
+        }
+
+        for (int i = 0; i < TABS_NUM; i++) {
+            scrollOffsets[i] = new Point();
+            targetScrollOffsets[i] = new Point();
+            tabButtons[i] = new Button(tabGap + i*(tabWidth + tabGap), tabGap, tabWidth, tabHeight, tabNames[i]);
+            tabFrames[i] = new Frame(0, tabHeight + tabGap, screenWidth, screenHeight - tabHeight, backgrounds[i%2]);
+        }
+
         JFrame frame = new JFrame("to-do list");
         Driver panel = new Driver();
         frame.add(panel);
@@ -77,11 +102,12 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         f1 = new Frame(50, 10, 200, 100, new Color(255, 0, 0));
+        
+        Frame f1 = new Frame(50, 10, 200, 100, new Color(255, 0, 0));
         f1.addFrame(new Frame(20, 10, 50, 50, new Color(255, 255, 0)));
-        b1 = new Button(10, 70, 50, 20, new Color(0, 0, 255), "Hey!!");
+        Button b1 = new Button(10, 70, 50, 20, new Color(0, 0, 255), "Hey!!");
         f1.addButton(b1);
-        mainFrame.addFrame(f1);
+        tabFrames[0].addFrame(f1);
 
 
         
@@ -162,10 +188,15 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     public void keyPressed(KeyEvent e) {
         int kc = e.getKeyCode();
 
+        Point currentTargetScrollOffset = targetScrollOffsets[currentTab];
         if (kc == KeyEvent.VK_UP) {
-            scrollOffsetY -= 10;
+            currentTargetScrollOffset.y -= 10;
         } else if (kc == KeyEvent.VK_DOWN) {
-            scrollOffsetY += 10;
+            currentTargetScrollOffset.y += 10;
+        } else if (kc == KeyEvent.VK_LEFT) {
+            currentTab = (currentTab - 1 + TABS_NUM) % TABS_NUM;
+        } else if (kc == KeyEvent.VK_RIGHT) {
+            currentTab = (currentTab + 1 + TABS_NUM) % TABS_NUM;
         }
     }
 

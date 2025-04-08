@@ -2,10 +2,13 @@ package classes;
 
 import java.util.*;
 import java.awt.*;
+import java.awt.image.*;;
 
 public class Frame {
     int x, y, width, height;
-    Color color;
+    Color backgroundColor;
+    Color borderColor;
+    BufferedImage image;
 
     HashSet<Frame> frames = new HashSet<>();
     HashSet<Button> buttons = new HashSet<>();
@@ -33,9 +36,18 @@ public class Frame {
     }
 
     public void render(Graphics g, int ox, int oy) {
-        if (color != null) {
-            g.setColor(color);
+        if (backgroundColor != null) {
+            g.setColor(backgroundColor);
             g.fillRect(x + ox, y + oy, width, height);
+        }
+
+        if (image != null) {
+            g.drawImage(image, x + ox, y + oy, width, height, null);
+        }
+
+        if (borderColor != null) {
+            g.setColor(borderColor);
+            g.drawRect(x + ox, y + oy, width, height);
         }
 
         for (Frame f: frames) {
@@ -51,12 +63,29 @@ public class Frame {
         render(g, 0, 0);
     }
 
-    public Frame(int x, int y, int width, int height, Color color) {
+    public Frame(int x, int y, int width, int height, BufferedImage image) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.color = color;
+        this.image = image;
+    }
+
+    public Frame(int x, int y, int width, int height, Color backgroundColor, Color borderColor) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.backgroundColor = backgroundColor;
+        this.borderColor = borderColor;
+    }
+
+    public Frame(int x, int y, int width, int height, Color backgroundColor) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.backgroundColor = backgroundColor;
     }
 
     public Frame(int x, int y, int width, int height) {
