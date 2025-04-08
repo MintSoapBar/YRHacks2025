@@ -247,6 +247,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     public void keyTyped(KeyEvent e) {}
   
     public void keyPressed(KeyEvent e) {
+        int kc = e.getKeyCode();
         Point currentTargetScrollOffset = targetScrollOffsets[currentTab];
         if (kc == KeyEvent.VK_UP) {
             currentTargetScrollOffset.y -= 10;
