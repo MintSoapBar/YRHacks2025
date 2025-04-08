@@ -21,7 +21,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static int scrollOffsetY = 0;
 
     static ArrayList<TaskGroup> taskGroups = new ArrayList<>();
-
+    static ArrayList<Task> tasks = new ArrayList<>(); 
     static ArrayList<Task> schedule = new ArrayList<>(); 
 
     static Frame mainFrame = new Frame(0, 0, screenWidth, screenHeight);
@@ -149,6 +149,48 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         }
     }
 
+    public void sortSchedule() {
+        schedule.clear();
+        long currentTime = System.currentTimeMillis();
+        long oneHourMillis = 3600000; // One hour in milliseconds
+
+        for (TaskGroup tg : taskGroups) {
+            ArrayList<Task> tasks = tg.getTasks();
+            tasks.sort(Comparator.comparingDouble(Task::getPriority).reversed());
+
+            for (Task task : tasks) {
+            if (task.getStartTime().getTime() <= currentTime &&
+                task.getDueTime().getTime() >= currentTime) {
+                schedule.add(task);
+            }
+            }
+        }
+
+        // Separate tasks into hourly slots
+        ArrayList<Task> hourlySchedule = new ArrayList<>();
+        long currentHourStart = currentTime - (currentTime % oneHourMillis);
+
+        while (!schedule.isEmpty()) {
+            Task selectedTask = null;
+
+            for (Task task : schedule) {
+            if (task.getStartTime().getTime() <= currentHourStart + oneHourMillis &&
+                task.getDueTime().getTime() >= currentHourStart) {
+                selectedTask = task;
+                break;
+            }
+            }
+
+            if (selectedTask != null) {
+            hourlySchedule.add(selectedTask);
+            schedule.remove(selectedTask);
+            }
+
+            currentHourStart += oneHourMillis; // Move to the next hour
+        }
+
+        schedule.addAll(hourlySchedule);
+    }
     public void keyTyped(KeyEvent e) {}
 
     public void keyPressed(KeyEvent e) {
