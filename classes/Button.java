@@ -11,13 +11,13 @@ public class Button {
     public int getAbsX() {
         int absX = x;
         for (Frame p = parent; p != null; p = p.parent) absX += p.x;
-        return absX;
+        return absX + Driver.scrollOffsetX;
     }
 
     public int getAbsY() {
         int absY = y;
         for (Frame p = parent; p != null; p = p.parent) absY += p.y;
-        return absY;
+        return absY + Driver.scrollOffsetY;
     }
 
     public boolean isPosInBounds(int posX, int posY) {
