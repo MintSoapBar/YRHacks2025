@@ -13,7 +13,6 @@ public class Task extends TimeBlock implements Comparable<Task> {
 
     public void createButtons() {
         scheduleButton = new Button(Driver.timeBlockLeft, Driver.taskListGap, Driver.timeBlockWidth, Driver.timeBlockHeight, new Color(255, 255, 255), name);
-        Driver.scheduleScrollingFrame.addChild(scheduleButton);
 
         taskListButton = new Button(
             Driver.taskListLeft, 
