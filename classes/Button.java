@@ -8,22 +8,8 @@ public class Button {
 
     Frame parent;
 
-    public int getAbsX() {
-        int absX = x;
-        for (Frame p = parent; p != null; p = p.parent) absX += p.x;
-        return absX + Driver.scrollOffsetX;
-    }
-
-    public int getAbsY() {
-        int absY = y;
-        for (Frame p = parent; p != null; p = p.parent) absY += p.y;
-        return absY + Driver.scrollOffsetY;
-    }
-
-    public boolean isPosInBounds(int posX, int posY) {
-        int absX = getAbsX();
-        int absY = getAbsY();
-        return posX >= absX && posX <= absX + width && posY >= absY && posY <= absY + height;
+    public boolean isPosInBounds(int posX, int posY, int ox, int oy) {
+        return posX >= x + ox && posX <= x + ox + width && posY >= y + oy && posY <= y + oy + height;
     }
 
     public void render(Graphics g, int ox, int oy) {

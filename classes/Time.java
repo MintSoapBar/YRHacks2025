@@ -3,6 +3,7 @@ package classes;
 import java.time.*;
 import java.time.format.*;
 
+//class to store a specific time after epoch
 public class Time implements Comparable<Time> {
     final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
