@@ -158,7 +158,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         Frame notif3 = new Frame(200, 220, 600, 40, new Color(255, 255, 255), "'Math assignment 3' is due: in 9 minutes");
         tabFrames[0].addChild(notif3);
 
-        Frame notif4 = new Frame(200, 270, 600, 40, new Color(255, 255, 255), "'obtaining vitamin d' will occur: in two hours");
+        Frame notif4 = new Frame(200, 270, 600, 40, new Color(255, 255, 255), "'obtaining vitamin d' will occur: in 15 weeks");
         tabFrames[0].addChild(notif4);
         
         Frame msgNotif = new Frame(300, 450, 400, 30, new Color(255, 255, 255), "Consider increasing your work efficiency by 792,000.00%");
