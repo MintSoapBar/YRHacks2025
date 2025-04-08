@@ -1,15 +1,12 @@
 package classes;
 
-public class Task implements Comparable<Task> {
-    String name;
-    String description;
+public class Task extends TimeBlock implements Comparable<Task> {
     Time dueDate;
     long length;
     Double priority;
 
     public Task(String name, String description, Time dueDate, long length, Double priority) {
-        this.name = name;
-        this.description = description;
+        super(name, description);
         this.dueDate = dueDate;
         this.length = length;
         this.priority = priority;

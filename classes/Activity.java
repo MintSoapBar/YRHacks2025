@@ -1,16 +1,13 @@
 package classes;
 
-public class Activity {
-	String name;
+public class Activity extends TimeBlock {
 	long startTime; // in milliseconds
 	long endTime; // in milliseconds
 	static byte daysOfWeek; // 0-6 for Sun-Sat, 7 for all days
-	String description;
 
 	// Constructor
 	public Activity(String name, String description, long startTime, long endTime, byte daysOfWeek) {
-		this.name = name;
-		this.description = description;
+		super(name, description);
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.daysOfWeek = daysOfWeek;
