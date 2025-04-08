@@ -26,7 +26,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.drawString(System.currentTimeMillis() + "", 10, 30);
+        g.drawString(System.currentTimeMillis() + "", 10, 25);
     }
 
     public Driver() {
