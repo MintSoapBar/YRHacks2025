@@ -5,6 +5,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -15,12 +18,16 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static int screenWidth = 1000;
     static int screenHeight = 600;
 
-    static int topBarHeight = 10;
+    static int tabHeight = 20;
+    static int tabWidth = 80;
+    static int tabGap = 5;
 
     static ArrayList<TaskGroup> taskGroups = new ArrayList<>();
 
     static int currentTab = 0;
     static Point[] scrollOffsets = new Point[TABS_NUM];
+    static String[] tabNames = new String[] {"Schedule", "Task List"};
+    static Button[] tabButtons = new Button[TABS_NUM];
     static Frame[] tabFrames = new Frame[TABS_NUM];
 
     public void run() {
@@ -45,6 +52,10 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         for (Frame f: tabFrames[0].frames) {
             f.x = (int) (System.currentTimeMillis() % 1000 / 10 + 10);
         }
+
+        for (Button b: tabButtons) {
+            b.render(g);
+        }
         
         Point mousePos = getMousePosition();
     }
@@ -58,10 +69,11 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         thread.start();
     }
 
-    public static void main(String[] arg) {
+    public static void main(String[] arg) throws IOException {
         for (int i = 0; i < TABS_NUM; i++) {
             scrollOffsets[i] = new Point();
-            tabFrames[i] = new Frame(0, topBarHeight, screenWidth, screenHeight - topBarHeight);
+            tabButtons[i] = new Button(tabGap + i*(tabWidth + tabGap), tabGap, tabWidth, tabHeight, tabNames[i]);
+            tabFrames[i] = new Frame(0, tabHeight, screenWidth, screenHeight - tabHeight);
         }
 
         JFrame frame = new JFrame("to-do list");
