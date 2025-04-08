@@ -97,8 +97,6 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        System.out.println(tasks.size() + " " + activities.size());
-
         sortSchedule((byte) 0b0010000);
         refreshScheduleButtons();
         updateTaskListButtons();
