@@ -18,10 +18,10 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static int screenWidth = 1000;
     static int screenHeight = 600;
 
-    static int topBarHeight = 20;
+    static int topBarHeight = 30;
 
-    static int tabHeight = 20;
-    static int tabWidth = 80;
+    static int tabHeight = 30;
+    static int tabWidth = 100;
     static int tabGap = 5;
 
     static int timeBlockGap = 10;
@@ -48,7 +48,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static int taskIndex = 0;
 
     static int currentTab = 0;
-    static String[] tabNames = new String[] { "Home", "Schedule", "Task List", "Activity List" };
+    static String[] tabNames = new String[] {"Home", "Schedule", "Task List", "Activity List", "Add Task"};
     static Button[] tabButtons = new Button[TABS_NUM];
     static Frame[] tabFrames = new Frame[TABS_NUM];
 
@@ -104,6 +104,15 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
 
         tabFrames[currentTab].render(g);
 
+        //topbar background
+        g.setColor(new Color(150, 210, 230));
+        g.fillRect(0, 0, screenWidth, topBarHeight + tabGap + tabHeight);
+
+        //timer
+        g.setColor(new Color(10, 10, 40));
+        g.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        g.drawString(new Time(System.currentTimeMillis())+"", 10, 25);
+
         for (int i = 0; i < TABS_NUM; i++) {
             Button b = tabButtons[i];
             b.backgroundColor = i == currentTab ? new Color(200, 200, 200) : new Color(255, 255, 255);
@@ -136,9 +145,24 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         }
 
         // Home screen
-        Frame welcomeFrame = new Frame(400, 200, 200, 100, new Color(255, 255, 255), "Welcome!");
+        Frame welcomeFrame = new Frame(400, 50, 200, 50, new Color(255, 255, 255), "Welcome!");
         welcomeFrame.textFont = new Font("Times New Roman", Font.BOLD, 20);
         tabFrames[0].addChild(welcomeFrame);
+
+        Frame notif1 = new Frame(200, 120, 600, 40, new Color(255, 255, 255), "'Comp sci assignment 4' is due: several hours ago");
+        tabFrames[0].addChild(notif1);
+
+        Frame notif2 = new Frame(200, 170, 600, 40, new Color(255, 255, 255), "'Chem lab' is due: several hours ago");
+        tabFrames[0].addChild(notif2);
+        
+        Frame notif3 = new Frame(200, 220, 600, 40, new Color(255, 255, 255), "'Math assignment 3' is due: in 9 minutes");
+        tabFrames[0].addChild(notif3);
+
+        Frame notif4 = new Frame(200, 270, 600, 40, new Color(255, 255, 255), "'obtaining vitamin d' will occur: in two hours");
+        tabFrames[0].addChild(notif4);
+        
+        Frame msgNotif = new Frame(300, 450, 400, 30, new Color(255, 255, 255), "Consider increasing your work efficiency by 792,000.00%");
+        tabFrames[0].addChild(msgNotif);
 
         // schedule
         scheduleScrollingFrame = new Frame(0, 0, screenWidth, screenHeight - tabHeight);
@@ -156,7 +180,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         tabFrames[3].addChild(activityListScrollingFrame);
 
         // create jframe
-        JFrame jFrame = new JFrame("to-do list");
+        JFrame jFrame = new JFrame("Sto-do");
         Driver panel = new Driver();
         jFrame.add(panel);
         jFrame.pack();
@@ -240,6 +264,16 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     public void keyTyped(KeyEvent e) {
     }
 
+    public void capScrollOffset(Point scrollOffset) {
+        if (currentTab == 1) {
+            scrollOffset.y = Math2.clamp(scrollOffset.y, -scheduleScrollingFrame.children.size() * (timeBlockGap + timeBlockHeight), 0);
+        } else if (currentTab == 2) {
+            scrollOffset.y = Math2.clamp(scrollOffset.y, -taskListScrollingFrame.children.size() * (taskListGap + taskListHeight), 0);
+        } else if (currentTab == 3) {
+            scrollOffset.y = Math2.clamp(scrollOffset.y, -activityListScrollingFrame.children.size() * (activityListGap + activityListHeight), 0);
+        }
+    }
+
     public void keyPressed(KeyEvent e) {
         int kc = e.getKeyCode();
 
@@ -252,8 +286,10 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
 
         if (kc == KeyEvent.VK_UP && currentTargetScrollOffset != null) {
             currentTargetScrollOffset.y += 50;
+            capScrollOffset(currentTargetScrollOffset);
         } else if (kc == KeyEvent.VK_DOWN && currentTargetScrollOffset != null) {
             currentTargetScrollOffset.y -= 50;
+            capScrollOffset(currentTargetScrollOffset);
         } else if (kc == KeyEvent.VK_LEFT) {
             currentTab = (currentTab - 1 + TABS_NUM) % TABS_NUM;
         } else if (kc == KeyEvent.VK_RIGHT) {
