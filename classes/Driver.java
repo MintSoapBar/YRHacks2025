@@ -86,66 +86,74 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
 
         
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        while(true) {
 
-            // TASK GROUP
-            System.out.println("Enter the task group name: ");
-            String name = br.readLine();
-            System.out.println("Enter the year of the start date:");
-            int year = Integer.parseInt(br.readLine());
-            System.out.println("Enter the month of the start date:");
-            int month = Integer.parseInt(br.readLine());
-            System.out.println("Enter the day of the start date:");
-            int day = Integer.parseInt(br.readLine());
-            System.out.println("Enter the hour of the start date:");
-            int hour = Integer.parseInt(br.readLine());
-            System.out.println("Enter the minute of the start date:");
-            int minute = Integer.parseInt(br.readLine());
-            System.out.println("Enter the second of the start date:");
-            int second = Integer.parseInt(br.readLine());
-            long startTime = LocalDateTime.of(year, month, day, hour, minute, second).toEpochSecond(ZoneOffset.ofHours(-4)) * 1000;
-            System.out.println("Enter the year of the due date:");
-            year = Integer.parseInt(br.readLine());
-            System.out.println("Enter the month of the due date:");
-            month = Integer.parseInt(br.readLine());
-            System.out.println("Enter the day of the due date:");
-            day = Integer.parseInt(br.readLine());
-            System.out.println("Enter the hour of the due date:");
-            hour = Integer.parseInt(br.readLine());
-            System.out.println("Enter the minute of the due date:");
-            minute = Integer.parseInt(br.readLine());
-            System.out.println("Enter the second of the due date:");
-            second = Integer.parseInt(br.readLine());
-            long dueTime = LocalDateTime.of(year, month, day, hour, minute, second).toEpochSecond(ZoneOffset.ofHours(-4)) * 1000;
-            System.out.println("Enter the task group description: ");
-            String description = br.readLine();
-            System.out.println("Enter the task group priority (0-1): ");
-            Double priority = Double.parseDouble(br.readLine());
-            taskGroups.add(new TaskGroup(name, new Time(startTime), new Time(dueTime), description, priority));
-            System.out.println(taskGroups.get(0));
+        // TASK GROUP
+        // System.out.println("Enter the task group name: ");
+        // String name = br.readLine();
+        // System.out.println("Enter the year of the start date:");
+        // int year = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the month of the start date:");
+        // int month = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the day of the start date:");
+        // int day = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the hour of the start date:");
+        // int hour = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the minute of the start date:");
+        // int minute = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the second of the start date:");
+        // int second = Integer.parseInt(br.readLine());
+        // long startTime = LocalDateTime.of(year, month, day, hour, minute, second).toEpochSecond(ZoneOffset.ofHours(-4)) * 1000;
+        // System.out.println("Enter the year of the due date:");
+        // year = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the month of the due date:");
+        // month = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the day of the due date:");
+        // day = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the hour of the due date:");
+        // hour = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the minute of the due date:");
+        // minute = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the second of the due date:");
+        // second = Integer.parseInt(br.readLine());
+        // long dueTime = LocalDateTime.of(year, month, day, hour, minute, second).toEpochSecond(ZoneOffset.ofHours(-4)) * 1000;
+        // System.out.println("Enter the task group description: ");
+        // String description = br.readLine();
+        // System.out.println("Enter the task group priority (0-1): ");
+        // Double priority = Double.parseDouble(br.readLine());
+        // taskGroups.add(new TaskGroup(name, description, new Time(startTime), new Time(dueTime), priority));
+        taskGroups.add(new TaskGroup("Chem Lab", "Design a lab", new Time(System.currentTimeMillis() - 1000000), new Time(System.currentTimeMillis() + 10000), 0.8));
 
-            // TASK
-            System.out.println("Enter the task name: ");
-            String taskName = br.readLine();
-            System.out.println("Enter the year of the task due date:");
-            year = Integer.parseInt(br.readLine());
-            System.out.println("Enter the month of the task due date:");
-            month = Integer.parseInt(br.readLine());
-            System.out.println("Enter the day of the task due date:");
-            day = Integer.parseInt(br.readLine());
-            System.out.println("Enter the hour of the task due date:");
-            hour = Integer.parseInt(br.readLine());
-            System.out.println("Enter the minute of the task due date:");
-            minute = Integer.parseInt(br.readLine());
-            System.out.println("Enter the second of the task due date:");
-            second = Integer.parseInt(br.readLine());
-            System.out.println("Enter the task description: ");
-            String taskDescription = br.readLine();
-            System.out.println("Enter the task priority (0-1): ");
-            Double taskPriority = Double.parseDouble(br.readLine());
-            long taskDueTime = LocalDateTime.of(year, month, day, hour, minute, second).toEpochSecond(ZoneOffset.ofHours(-4)) * 1000;
-            taskGroups.get(0).addTask(new Task(taskName, new Time(taskDueTime), taskDescription, taskPriority));
-            System.out.println(taskGroups.get(0).getTask(0));
+        // TASK
+        // System.out.println("Enter the task name: ");
+        // String taskName = br.readLine();
+        // System.out.println("Enter the year of the task due date:");
+        // year = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the month of the task due date:");
+        // month = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the day of the task due date:");
+        // day = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the hour of the task due date:");
+        // hour = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the minute of the task due date:");
+        // minute = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the second of the task due date:");
+        // second = Integer.parseInt(br.readLine());
+        // System.out.println("Enter the task description: ");
+        // String taskDescription = br.readLine();
+        // System.out.println("Enter the task priority (0-1): ");
+        // Double taskPriority = Double.parseDouble(br.readLine());
+        // long taskDueTime = LocalDateTime.of(year, month, day, hour, minute, second).toEpochSecond(ZoneOffset.ofHours(-4)) * 1000;
+        // taskGroups.get(0).addTask(new Task(taskName, taskDescription, new Time(taskDueTime), taskPriority));
+        taskGroups.get(0).addTask(new Task("Chem Lab", "Graphics", new Time(System.currentTimeMillis() + 1000), 1000000000000l, 0.7));
+        taskGroups.get(0).addTask(new Task("Chem Lab", "Procedure", new Time(System.currentTimeMillis() + 1000), 1000000005464l, 0.8));
+        // System.out.println(taskGroups.get(0).getTask(0));
+        schedule.add(taskGroups.get(0).getTask(0));
+        schedule.add(taskGroups.get(0).getTask(1));
+
+        Collections.sort(schedule);
+
+        for (Task t : schedule) {
+            System.out.println(t);
         }
     }
 
