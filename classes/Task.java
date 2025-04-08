@@ -21,6 +21,9 @@ public class Task implements Comparable<Task> {
     }
 
     public int compareTo(Task task) {
-        return this.priority.compareTo(task.priority);
+        if (System.currentTimeMillis() - dueDate.time > 0) {
+            return 1; // this task is overdue
+        }
+        return Double.compare(((System.currentTimeMillis() - this.dueDate.time) / this.priority), ((System.currentTimeMillis() - task.dueDate.time) / task.priority));
     }
 }
