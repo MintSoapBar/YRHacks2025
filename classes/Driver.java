@@ -45,6 +45,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
 
     static long dayStart = 28800000;
     static long dayEnd = 79200000;
+    static int taskIndex = 0;
 
     static int currentTab = 0;
     static String[] tabNames = new String[] {"Home", "Schedule", "Task List", "Activity List"};
@@ -67,16 +68,16 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         }
     }
 
-    public static void refreshScheduleButtons() {
-        scheduleScrollingFrame.children.clear();
+public static void refreshScheduleButtons() {
+    scheduleScrollingFrame.children.clear();
 
-        for (int i = 0; i < schedule.size(); i++) {
-            TimeBlock tb = schedule.get(i);
-            Button b = tb.scheduleButton;
-            b.y = 10 + i * (timeBlockGap + timeBlockHeight);
-            scheduleScrollingFrame.children.add(b);
-        }
+    for (int i = 0; i < schedule.size(); i++) {
+        TimeBlock tb = schedule.get(i);
+        Button b = tb.scheduleButton;
+        b.y = 10 + i * (timeBlockGap + timeBlockHeight);
+        scheduleScrollingFrame.children.add(b);
     }
+}
 
     public static void updateTaskListButtons() {
         tasks.sort(null);
@@ -97,8 +98,6 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        sortSchedule((byte) 0b0010000);
-        refreshScheduleButtons();
         updateTaskListButtons();
         updateActivityListButtons();
 
@@ -167,8 +166,16 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         // long taskDueTime = LocalDateTime.of(year, month, day, hour, minute, second).toEpochSecond(ZoneOffset.ofHours(-4)) * 1000;
         tasks.add(new Task("Comp sci assignment 4", "its due wednesday help", 0, 0, new Time(1744138800000l), 3456000l, 0.7));
         tasks.add(new Task("Chem Lab", "Procedure will annihilate me", 0, 0, new Time(1744218000000l), 6912000l, 0.8));
+        tasks.add(new Task("Math assignment 3", "Due on Friday", 0, 0, new Time(1744304400000l), 86400000l, 0.6));
         activities.add(new Activity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b0010000));
         activities.add(new Activity("Eating", "One meal per day fr", 72000000l, 75600000l, (byte) 0b0010000));
+
+        sortSchedule((byte) 0b0010000);
+        refreshScheduleButtons();
+
+        for (TimeBlock tb: schedule) {
+            System.out.println(tb);
+        }
     }
 
     public static void sortSchedule(byte currentDay) {
@@ -187,8 +194,9 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
             schedule.add(a);
         }
 
+        int scheduleIndex = 0;
         for (int i = 0; i <= dayActivities.size(); i++) {
-            if (tasks.size() == 0) { // No tasks to schedule
+            if (tasks.size() == taskIndex) { // No tasks to schedule
                 break;
             }
             long startTime;
@@ -206,27 +214,29 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
                 endTime = dayActivities.get(i).startTime;
             }
 
-            int offset = 0;
-            while (tasks.size() > 0 && endTime != startTime) {
-                Task task = tasks.get(0);
+            
+            while (tasks.size() > taskIndex && endTime != startTime) {
+                Task task = tasks.get(taskIndex);
                 // Task longer than time block
-                if (task.length > endTime - startTime) {
-                    task.length -= endTime - startTime;
-                    schedule.add(i * 2 + offset, new Task(task.name, task.description, startTime, endTime, task.dueDate, endTime - startTime, task.priority));
+                if (task.length - task.timeDone > endTime - startTime) {
+                    task.timeDone += endTime - startTime;
+                    schedule.add(scheduleIndex, new Task(task.name, task.description, startTime, endTime, task.dueDate, endTime - startTime, task.priority));
                     startTime = endTime;
                 }
 
                 // Task shorter than time block
                 else {
-                    tasks.remove(0);
                     task.startTime = startTime;
                     task.endTime = startTime + task.length;
-                    schedule.add(i * 2 + offset, task);
+                    schedule.add(scheduleIndex, task);
                     startTime += task.length;
+                    task.timeDone = task.length;
+                    taskIndex++;
                 }
 
-                offset++;
+                scheduleIndex++;
             }
+            scheduleIndex++;
         }
     }
   

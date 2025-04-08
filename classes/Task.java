@@ -5,6 +5,7 @@ import java.awt.*;
 public class Task extends TimeBlock implements Comparable<Task> {
     Time dueDate;
     long length;
+    long timeDone;
     Double priority;
 
     Button taskListButton;
