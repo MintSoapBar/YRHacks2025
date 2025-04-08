@@ -23,6 +23,8 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static int tabGap = 5;
 
     static ArrayList<TaskGroup> taskGroups = new ArrayList<>();
+    static ArrayList<TimeBlock> timeBlocks = new ArrayList<>(); 
+    static ArrayList<TimeBlock> schedule = new ArrayList<>(); 
 
     static int currentTab = 0;
     final static double SCROLL_ALPHA = 0.3;
@@ -175,19 +177,76 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         // System.out.println(taskGroups.get(0).getTask(0));
         schedule.add(taskGroups.get(0).getTask(0));
         schedule.add(taskGroups.get(0).getTask(1));
+        timeBlocks.add(new Activity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b0010000));
+        timeBlocks.add(taskGroups.get(0).getTask(0));
+        timeBlocks.add(taskGroups.get(0).getTask(1));
 
-        Collections.sort(schedule);
-
-        for (Task t : schedule) {
+        for (TimeBlock t : schedule) {
             System.out.println(t);
         }
     }
 
+    public void sortSchedule(byte currentDay) {
+        schedule.clear();
+        long currentTime = System.currentTimeMillis();
+        long oneHourMillis = 3600000; // One hour in milliseconds
+
+        ArrayList<Activity> dayActivities = new ArrayList<>();
+        for (TimeBlock t : timeBlocks) {
+            if (t instanceof Activity) {
+                Activity a = (Activity) t;
+                if ((a.daysOfWeek & currentDay) > 0) {
+                    dayActivities.add(a);
+                }
+            }
+        }
+        Collections.sort(dayActivities);
+        for (Activity a : dayActivities) {
+            schedule.add(a);
+        }
+
+        ArrayList<TimeBlock> openTimeBlocks = new ArrayList<>();
+
+        // // Assign tasks to available time slots
+        // ArrayList<Task> tasks = new ArrayList<>(timeBlocks.stream()
+        //     .filter(t -> t instanceof Task)
+        //     .map(t -> (Task) t)
+        //     .toList());
+        // tasks.sort(Comparator.comparingDouble(Task::getPriority).reversed());
+
+        // for (Task task : tasks) {
+        //     long taskDuration = task.getDuration();
+        //     boolean taskScheduled = false;
+
+        //     for (int i = 0; i < schedule.size() - 1; i++) {
+        //     TimeBlock current = schedule.get(i);
+        //     TimeBlock next = schedule.get(i + 1);
+
+        //     long gapStart = current.getEndTime().getTime();
+        //     long gapEnd = next.getStartTime().getTime();
+
+        //     if (gapEnd - gapStart >= taskDuration) {
+        //         schedule.add(new Task(task.getName(), task.getDescription(), new Time(gapStart), gapStart + taskDuration, task.getPriority()));
+        //         taskScheduled = true;
+        //         break;
+        //     }
+        //     }
+
+        //     if (!taskScheduled) {
+        //     long lastEndTime = schedule.isEmpty() ? dayStart : schedule.get(schedule.size() - 1).getEndTime().getTime();
+        //     if (dayEnd - lastEndTime >= taskDuration) {
+        //         schedule.add(new Task(task.getName(), task.getDescription(), new Time(lastEndTime), lastEndTime + taskDuration, task.getPriority()));
+        //     }
+        //     }
+        // }
+
+        // // Sort the schedule by start time
+        // Collections.sort(schedule);
+    }
+  
     public void keyTyped(KeyEvent e) {}
-
+  
     public void keyPressed(KeyEvent e) {
-        int kc = e.getKeyCode();
-
         Point currentTargetScrollOffset = targetScrollOffsets[currentTab];
         if (kc == KeyEvent.VK_UP) {
             currentTargetScrollOffset.y -= 10;
