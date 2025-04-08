@@ -22,8 +22,8 @@ public class Activity extends TimeBlock implements Comparable<Activity> {
 		return s;
 	}
 
-	public void createButtons() {
-        scheduleButton = new Button(Driver.timeBlockLeft, Driver.activityListGap, Driver.timeBlockWidth, Driver.timeBlockHeight, new Color(255, 255, 255), name);
+	public void refreshButtons() {
+        super.refreshButtons();
 
         activityListButton = new Button(
 			Driver.activityListLeft, 
@@ -40,7 +40,7 @@ public class Activity extends TimeBlock implements Comparable<Activity> {
 		super(name, description, startTime, endTime);
 		this.daysOfWeek = daysOfWeek;
 
-		createButtons();
+		refreshButtons();
 	}
 
 	public static void main(String[] args) {

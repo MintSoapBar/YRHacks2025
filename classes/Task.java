@@ -11,8 +11,8 @@ public class Task extends TimeBlock implements Comparable<Task> {
 
     Button taskListButton;
 
-    public void createButtons() {
-        scheduleButton = new Button(Driver.timeBlockLeft, Driver.taskListGap, Driver.timeBlockWidth, Driver.timeBlockHeight, new Color(255, 255, 255), name);
+    public void refreshButtons() {
+        super.refreshButtons();
 
         taskListButton = new Button(
             Driver.taskListLeft, 
@@ -31,7 +31,7 @@ public class Task extends TimeBlock implements Comparable<Task> {
         this.length = length;
         this.priority = priority;
 
-        createButtons();
+        refreshButtons();
     }
 
     public String toString() {

@@ -73,6 +73,8 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
 
         for (int i = 0; i < schedule.size(); i++) {
             TimeBlock tb = schedule.get(i);
+            tb.refreshButtons();
+
             Button b = tb.scheduleButton;
             b.y = timeBlockGap + i * (timeBlockGap + timeBlockHeight);
             scheduleScrollingFrame.addChild(b);
@@ -168,8 +170,8 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
                 0.7));
         tasks.add(new Task("Chem Lab", "Procedure will annihilate me", 0, 0, new Time(1744218000000l), 6912000l, 0.8));
         tasks.add(new Task("Math assignment 3", "Due on Friday", 0, 0, new Time(1744304400000l), 86400000l, 0.6));
-        activities.add(new Activity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b0010000));
-        activities.add(new Activity("Eating", "One meal per day fr", 72000000l, 75600000l, (byte) 0b0010000));
+        activities.add(new Activity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b10010010));
+        activities.add(new Activity("obtaining vitamin d", "its beautiful", 72000000l, 75600000l, (byte) 0b11111110));
 
         sortSchedule((byte) 0b0010000);
         refreshButtons();
