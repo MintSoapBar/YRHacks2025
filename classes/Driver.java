@@ -149,16 +149,16 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         welcomeFrame.textFont = new Font("Times New Roman", Font.BOLD, 20);
         tabFrames[0].addChild(welcomeFrame);
 
-        Frame notif1 = new Frame(200, 120, 600, 40, new Color(255, 255, 255), "'Comp sci assignment 4' is due: several hours ago");
+        Frame notif1 = new Frame(200, 120, 600, 40, new Color(255, 255, 255), "Task 'Comp sci assignment 4' is due: several hours ago");
         tabFrames[0].addChild(notif1);
 
-        Frame notif2 = new Frame(200, 170, 600, 40, new Color(255, 255, 255), "'Chem lab' is due: several hours ago");
+        Frame notif2 = new Frame(200, 170, 600, 40, new Color(255, 255, 255), "Task 'Chem lab' is due: several hours ago");
         tabFrames[0].addChild(notif2);
         
-        Frame notif3 = new Frame(200, 220, 600, 40, new Color(255, 255, 255), "'Math assignment 3' is due: in 9 minutes");
+        Frame notif3 = new Frame(200, 220, 600, 40, new Color(255, 255, 255), "Task 'Math assignment 3' is due: in 9 minutes");
         tabFrames[0].addChild(notif3);
 
-        Frame notif4 = new Frame(200, 270, 600, 40, new Color(255, 255, 255), "'obtaining vitamin d' will occur: in 15 weeks");
+        Frame notif4 = new Frame(200, 270, 600, 40, new Color(255, 255, 255), "Activity 'obtaining vitamin d' will occur: in 15 weeks");
         tabFrames[0].addChild(notif4);
         
         Frame msgNotif = new Frame(300, 450, 400, 30, new Color(255, 255, 255), "Consider increasing your work efficiency by 792,000.00%");
