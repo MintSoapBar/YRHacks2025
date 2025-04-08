@@ -27,8 +27,8 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static ArrayList<Task> tasks = new ArrayList<>(); 
     static ArrayList<TimeBlock> schedule = new ArrayList<>(); 
 
-    static long dayStart = 28800000; // 0:00
-    static long dayEnd = 79200000; // 24:00
+    static long dayStart = 28800000;
+    static long dayEnd = 79200000;
 
     static int currentTab = 0;
     final static double SCROLL_ALPHA = 0.3;
