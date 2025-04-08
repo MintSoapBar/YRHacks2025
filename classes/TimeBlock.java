@@ -1,5 +1,7 @@
 package classes;
 
+import java.awt.*;
+
 public class TimeBlock {
 	String name;
 	String description;
@@ -7,6 +9,17 @@ public class TimeBlock {
 	long endTime; // in milliseconds
 
 	Button scheduleButton;
+
+	public void refreshButtons() {
+        scheduleButton = new Button(
+            Driver.timeBlockLeft, 
+            Driver.timeBlockGap, 
+            Driver.timeBlockWidth, 
+            Driver.timeBlockHeight, 
+            new Color(255, 255, 255), 
+			name + " - " + Time.interpretLong(startTime) + "-" + Time.interpretLong(endTime)
+            );
+	}
 
 	public TimeBlock(String name, String description, long startTime, long endTime) {
 		this.name = name;
