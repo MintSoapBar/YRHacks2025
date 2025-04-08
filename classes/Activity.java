@@ -32,7 +32,7 @@ public class Activity extends TimeBlock implements Comparable<Activity> {
 			Driver.activityListWidth, 
 			Driver.activityListHeight, 
 			new Color(255, 255, 255), 
-			name + " - " + byteToDays(daysOfWeek) + " - " + startTime + " " + endTime
+			name + " - " + byteToDays(daysOfWeek) + " - " + startTime + "-" + endTime
 			);
     }
 

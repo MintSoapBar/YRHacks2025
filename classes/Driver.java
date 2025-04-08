@@ -107,10 +107,6 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
             b.backgroundColor = i == currentTab ? new Color(200, 200, 200) : new Color(255, 255, 255);
             b.render(g);
         }
-
-        for (Task t: tasks) {
-            System.out.println(t.name);
-        }
     }
 
     public Driver() {
