@@ -20,31 +20,20 @@ public class Frame {
 
     Frame parent;
 
-    HashSet<Frame> frames = new HashSet<>();
-    HashSet<Button> buttons = new HashSet<>();
+    HashSet<Frame> children = new HashSet<>();
 
     boolean isScrollingFrame = false;
     Point targetScrollOffset = new Point();
     Point scrollOffset = new Point();
 
-    public void addFrame(Frame f) {
-        frames.add(f);
+    public void addChild(Frame f) {
+        children.add(f);
         f.parent = this;
     }
 
-    public void removeFrame(Frame f) {
-        frames.remove(f);
+    public void removeChild(Frame f) {
+        children.remove(f);
         f.parent = null;
-    }
-
-    public void addButton(Button b) {
-        buttons.add(b);
-        b.parent = this;
-    }
-
-    public void removeButton(Button b) {
-        buttons.remove(b);
-        b.parent = null;
     }
 
     public void render(Graphics g, int ox, int oy) {
@@ -63,7 +52,6 @@ public class Frame {
         }
 
         if (borderColor != null) {
-            System.out.println(borderColor);
             g.setColor(borderColor);
             g.drawRect(x + ox, y + oy, width, height);
         }
@@ -85,12 +73,8 @@ public class Frame {
                     y + oy + (int) (height / 2 + g.getFontMetrics().getHeight() * 0.4));
         }
 
-        for (Frame f : frames) {
-            f.render(g, x + ox + scrollOffset.x, y + oy + scrollOffset.y);
-        }
-
-        for (Button b : buttons) {
-            b.render(g, x + ox + scrollOffset.x, y + oy + scrollOffset.y);
+        for (Frame c: children) {
+            c.render(g, x + ox + scrollOffset.x, y + oy + scrollOffset.y);
         }
     }
 

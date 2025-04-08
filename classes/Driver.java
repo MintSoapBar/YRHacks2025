@@ -24,7 +24,11 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static int tabWidth = 80;
     static int tabGap = 5;
 
-    static ArrayList<TaskGroup> taskGroups = new ArrayList<>();
+    static int timeBlockGap = 10;
+    static int timeBlockLeft = 250;
+    static int timeBlockWidth = 500;
+    static int timeBlockHeight = 100;
+
     static ArrayList<Activity> activities = new ArrayList<>();
     static ArrayList<Task> tasks = new ArrayList<>(); 
     static ArrayList<TimeBlock> schedule = new ArrayList<>();
@@ -54,12 +58,13 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
+        updateScheduleDisplay();
+
         tabFrames[currentTab].render(g);
 
         for (int i = 0; i < TABS_NUM; i++) {
             Button b = tabButtons[i];
             b.backgroundColor = i == currentTab? new Color(200, 200, 200): new Color(255, 255, 255);
-            System.out.println(i + " " + b.backgroundColor.getRed());
             b.render(g);
         }
         
@@ -88,16 +93,15 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
             tabFrames[i] = new Frame(0, topBarHeight + tabHeight + tabGap, screenWidth, screenHeight - tabHeight, backgrounds[i%2]);
         }
 
-
         //Home screen
         Frame welcomeFrame = new Frame(400, 200, 200, 100, new Color(255, 255, 255), "Welcome!");
         welcomeFrame.textFont = new Font("Times New Roman", Font.BOLD, 20);
-        tabFrames[0].addFrame(welcomeFrame);
+        tabFrames[0].addChild(welcomeFrame);
 
         //schedule
         scheduleScrollingFrame = new Frame(0, 0, screenWidth, screenHeight - tabHeight);
         scheduleScrollingFrame.isScrollingFrame = true;
-        tabFrames[1].addFrame(scheduleScrollingFrame);
+        tabFrames[1].addChild(scheduleScrollingFrame);
 
 
         
@@ -111,30 +115,41 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        taskGroups.add(new TaskGroup("Chem Lab", "Design a lab", new Time(System.currentTimeMillis() - 1000000), new Time(System.currentTimeMillis() + 10000), 0.8));
 
         // long taskDueTime = LocalDateTime.of(year, month, day, hour, minute, second).toEpochSecond(ZoneOffset.ofHours(-4)) * 1000;
-        taskGroups.get(0).addTask(new Task("Chem Lab", "Graphics", new Time(System.currentTimeMillis() + 1000), 1000000000000l, 0.7));
-        taskGroups.get(0).addTask(new Task("Chem Lab", "Procedure", new Time(System.currentTimeMillis() + 1000), 1000000005464l, 0.8));
-        // System.out.println(taskGroups.get(0).getTask(0));
-        schedule.add(taskGroups.get(0).getTask(0));
-        schedule.add(taskGroups.get(0).getTask(1));
-        activities.add(new Activity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b0010000));
-        tasks.add(taskGroups.get(0).getTask(0));
-        tasks.add(taskGroups.get(0).getTask(1));
+        addTask("Chem Lab", "Graphics", new Time(System.currentTimeMillis() + 1000), 1000000000000l, 0.7);
+        addTask("Chem Lab", "Procedure", new Time(System.currentTimeMillis() + 1000), 1000000005464l, 0.8);
+        addActivity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b0010000);
 
         for (TimeBlock t : schedule) {
             System.out.println(t);
         }
     }
 
-    public void addActivity(String name, String description, long startTime, long endTime, byte daysOfWeek) {
-        activities.add(new Activity(name, description, startTime, endTime, daysOfWeek));
+    public static void updateScheduleDisplay() {
+        for (int i = 0; i < schedule.size(); i++) {
+            TimeBlock tb = schedule.get(i);
+            tb.scheduleButton.y = 10 + i * (timeBlockGap + timeBlockHeight);
+        }
+    }
+
+    public static Button createTimeBlockButton(TimeBlock tb) {
+        Button b = new Button(timeBlockLeft, 10, timeBlockWidth, timeBlockHeight, new Color(255, 255, 255), tb.name);
+        scheduleScrollingFrame.addChild(b);
+        return b;
+    }
+
+    public static void addActivity(String name, String description, long startTime, long endTime, byte daysOfWeek) {
+        Activity a = new Activity(name, description, startTime, endTime, daysOfWeek);
+        a.scheduleButton = createTimeBlockButton(a);
+        activities.add(a);
         // have to sort after adding to the list
     }
 
-    public void addTask(String name, String description, long dueDate, long length, Double priority) {
-        tasks.add(new Task(name, description, new Time(dueDate), length, priority));
+    public static void addTask(String name, String description, Time dueDate, long length, Double priority) {
+        Task t = new Task(name, description, dueDate, length, priority);
+        t.scheduleButton = createTimeBlockButton(t);
+        tasks.add(t);
         // have to sort after adding to the list
     }
 
@@ -199,14 +214,14 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
 
         Point currentTargetScrollOffset = null;
 
-        for (Frame f: tabFrames[currentTab].frames) {
+        for (Frame f: tabFrames[currentTab].children) {
             if (f.isScrollingFrame) currentTargetScrollOffset = f.targetScrollOffset;
         }
 
         if (kc == KeyEvent.VK_UP && currentTargetScrollOffset != null) {
-            currentTargetScrollOffset.y += 10;
+            currentTargetScrollOffset.y += 50;
         } else if (kc == KeyEvent.VK_DOWN && currentTargetScrollOffset != null) {
-            currentTargetScrollOffset.y -= 10;
+            currentTargetScrollOffset.y -= 50;
         } else if (kc == KeyEvent.VK_LEFT) {
             currentTab = (currentTab - 1 + TABS_NUM) % TABS_NUM;
         } else if (kc == KeyEvent.VK_RIGHT) {
