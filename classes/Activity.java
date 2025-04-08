@@ -1,6 +1,6 @@
 package classes;
 
-public class Activity extends TimeBlock {
+public class Activity extends TimeBlock implements Comparable<Activity> {
 	long startTime; // in milliseconds
 	long endTime; // in milliseconds
 	byte daysOfWeek; // 0-6 for Sun-Sat, 7 for all days
@@ -25,4 +25,13 @@ public class Activity extends TimeBlock {
 		System.out.println(activity);
 	}
 	
+	public int compareTo(Activity activity) {
+		if (this.startTime < activity.startTime) {
+			return -1;
+		} else if (this.startTime > activity.startTime) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
 }

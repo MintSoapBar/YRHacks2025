@@ -1,4 +1,4 @@
-package classes
+package classes;
 
 public class TimeBlock {
 	String name;

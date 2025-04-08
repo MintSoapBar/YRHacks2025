@@ -22,7 +22,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
 
     static ArrayList<TaskGroup> taskGroups = new ArrayList<>();
     static ArrayList<TimeBlock> timeBlocks = new ArrayList<>(); 
-    static ArrayList<Task> schedule = new ArrayList<>(); 
+    static ArrayList<TimeBlock> schedule = new ArrayList<>(); 
 
     static Frame mainFrame = new Frame(0, 0, screenWidth, screenHeight);
     static Button b1;
@@ -153,65 +153,70 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         timeBlocks.add(taskGroups.get(0).getTask(0));
         timeBlocks.add(taskGroups.get(0).getTask(1));
 
-        Collections.sort(schedule);
-
-        for (Task t : schedule) {
+        for (TimeBlock t : schedule) {
             System.out.println(t);
         }
     }
 
-    public void sortSchedule() {
+    public void sortSchedule(byte currentDay) {
         schedule.clear();
         long currentTime = System.currentTimeMillis();
         long oneHourMillis = 3600000; // One hour in milliseconds
 
+        ArrayList<Activity> dayActivities = new ArrayList<>();
         for (TimeBlock t : timeBlocks) {
-            ArrayList<Task> tasks = tg.getTasks();
-            tasks.sort(Comparator.comparingDouble(Task::getPriority).reversed());
-
-            for (Task task : tasks) {
-            if (task.getStartTime().getTime() <= currentTime &&
-                task.getDueTime().getTime() >= currentTime) {
-                schedule.add(task);
-            }
+            if (t instanceof Activity) {
+                Activity a = (Activity) t;
+                if ((a.daysOfWeek & currentDay) > 0) {
+                    dayActivities.add(a);
+                }
             }
         }
-
-        // Separate tasks into hourly slots
-        ArrayList<Task> hourlySchedule = new ArrayList<>();
-        long currentHourStart = currentTime - (currentTime % oneHourMillis);
-
-        while (!schedule.isEmpty()) {
-            Task selectedTask = null;
-
-            for (Task task : schedule) {
-            if (task.getStartTime().getTime() <= currentHourStart + oneHourMillis &&
-                task.getDueTime().getTime() >= currentHourStart) {
-                selectedTask = task;
-                break;
-            }
-            }
-
-            if (selectedTask != null) {
-            hourlySchedule.add(selectedTask);
-            schedule.remove(selectedTask);
-            }
-
-            currentHourStart += oneHourMillis; // Move to the next hour
+        Collections.sort(dayActivities);
+        for (Activity a : dayActivities) {
+            schedule.add(a);
         }
 
-        schedule.addAll(hourlySchedule);
-    }
-    public void keyTyped(KeyEvent e) {}
+        ArrayList<TimeBlock> openTimeBlocks = new ArrayList<>();
 
-    public void keyPressed(KeyEvent e) {
-        int kc = e.getKeyCode();
 
-        if (kc == KeyEvent.VK_UP) {
-            scrollOffsetY -= 10;
-        } else if (kc == KeyEvent.VK_DOWN) {
-            scrollOffsetY += 10;
-        }
+
+        // // Assign tasks to available time slots
+        // ArrayList<Task> tasks = new ArrayList<>(timeBlocks.stream()
+        //     .filter(t -> t instanceof Task)
+        //     .map(t -> (Task) t)
+        //     .toList());
+        // tasks.sort(Comparator.comparingDouble(Task::getPriority).reversed());
+
+        // for (Task task : tasks) {
+        //     long taskDuration = task.getDuration();
+        //     boolean taskScheduled = false;
+
+        //     for (int i = 0; i < schedule.size() - 1; i++) {
+        //     TimeBlock current = schedule.get(i);
+        //     TimeBlock next = schedule.get(i + 1);
+
+        //     long gapStart = current.getEndTime().getTime();
+        //     long gapEnd = next.getStartTime().getTime();
+
+        //     if (gapEnd - gapStart >= taskDuration) {
+        //         schedule.add(new Task(task.getName(), task.getDescription(), new Time(gapStart), gapStart + taskDuration, task.getPriority()));
+        //         taskScheduled = true;
+        //         break;
+        //     }
+        //     }
+
+        //     if (!taskScheduled) {
+        //     long lastEndTime = schedule.isEmpty() ? dayStart : schedule.get(schedule.size() - 1).getEndTime().getTime();
+        //     if (dayEnd - lastEndTime >= taskDuration) {
+        //         schedule.add(new Task(task.getName(), task.getDescription(), new Time(lastEndTime), lastEndTime + taskDuration, task.getPriority()));
+        //     }
+        //     }
+        // }
+
+        // // Sort the schedule by start time
+        // Collections.sort(schedule);
+        
     }
 
     public void keyReleased(KeyEvent e) {}
@@ -225,4 +230,17 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     public void mouseEntered(MouseEvent e) {}
 
     public void mouseExited(MouseEvent e) {}
+
+    public void keyTyped(KeyEvent e) {
+    }
+
+    public void keyPressed(KeyEvent e) {
+        int kc = e.getKeyCode();
+
+        if (kc == KeyEvent.VK_UP) {
+            scrollOffsetY -= 10;
+        } else if (kc == KeyEvent.VK_DOWN) {
+            scrollOffsetY += 10;
+        }
+    }
 }
