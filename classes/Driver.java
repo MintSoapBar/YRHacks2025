@@ -34,7 +34,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-
+      
         g.drawString(System.currentTimeMillis() + "", 10, 25);
 
         mainFrame.render(g);
@@ -71,7 +71,6 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         
         f1 = new Frame(50, 10, 200, 100, new Color(255, 0, 0));
         f1.addFrame(new Frame(20, 10, 50, 50, new Color(255, 255, 0)));
