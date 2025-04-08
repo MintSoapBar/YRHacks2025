@@ -190,46 +190,6 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
                 }
             }
         }
-
-        
-
-
-
-        // Assign tasks to available time slots
-        // ArrayList<Task> tasks = new ArrayList<>(timeBlocks.stream()
-        //     .filter(t -> t instanceof Task)
-        //     .map(t -> (Task) t)
-        //     .toList());
-        // tasks.sort(Comparator.comparingDouble(Task::getPriority).reversed());
-
-        // for (Task task : tasks) {
-        //     long taskDuration = task.getDuration();
-        //     boolean taskScheduled = false;
-
-        //     for (int i = 0; i < schedule.size() - 1; i++) {
-        //     TimeBlock current = schedule.get(i);
-        //     TimeBlock next = schedule.get(i + 1);
-
-        //     long gapStart = current.getEndTime().getTime();
-        //     long gapEnd = next.getStartTime().getTime();
-
-        //     if (gapEnd - gapStart >= taskDuration) {
-        //         schedule.add(new Task(task.getName(), task.getDescription(), new Time(gapStart), gapStart + taskDuration, task.getPriority()));
-        //         taskScheduled = true;
-        //         break;
-        //     }
-        //     }
-
-        //     if (!taskScheduled) {
-        //     long lastEndTime = schedule.isEmpty() ? dayStart : schedule.get(schedule.size() - 1).getEndTime().getTime();
-        //     if (dayEnd - lastEndTime >= taskDuration) {
-        //         schedule.add(new Task(task.getName(), task.getDescription(), new Time(lastEndTime), lastEndTime + taskDuration, task.getPriority()));
-        //     }
-        //     }
-        // }
-
-        // // Sort the schedule by start time
-        // Collections.sort(schedule);
     }
   
     public void keyTyped(KeyEvent e) {}
