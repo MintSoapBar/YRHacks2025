@@ -1,12 +1,29 @@
 package classes;
 
+import java.awt.*;
+
 public class Activity extends TimeBlock implements Comparable<Activity> {
 	byte daysOfWeek; // 0-6 for Sun-Sat, 7 for all days
+	
+    Button activityListButton;
+
+	public void createButtons() {
+        scheduleButton = new Button(Driver.timeBlockLeft, Driver.activityListGap, Driver.timeBlockWidth, Driver.timeBlockHeight, new Color(255, 255, 255), name);
+        Driver.scheduleScrollingFrame.addChild(scheduleButton);
+
+        activityListButton = new Button(Driver.activityListLeft, Driver.activityListGap, Driver.activityListWidth, Driver.activityListHeight, new Color(255, 255, 255));
+        Driver.activityListScrollingFrame.addChild(activityListButton);
+        Frame titlelabel = new Frame(10, 0, 0, Driver.activityListHeight, name);
+        titlelabel.textAlignX = -1;
+        activityListButton.addChild(titlelabel);
+    }
 
 	// Constructor
 	public Activity(String name, String description, long startTime, long endTime, byte daysOfWeek) {
 		super(name, description, startTime, endTime);
 		this.daysOfWeek = daysOfWeek;
+
+		createButtons();
 	}
 
 	@Override
@@ -21,13 +38,13 @@ public class Activity extends TimeBlock implements Comparable<Activity> {
 		System.out.println(activity);
 	}
 	
-	public int compareTo(Activity activity) {
-		if (this.startTime < activity.startTime) {
+	public int compareTo(Activity o) {
+		if (this.startTime < o.startTime) {
 			return -1;
-		} else if (this.startTime > activity.startTime) {
+		} else if (this.startTime > o.startTime) {
 			return 1;
 		} else {
-			return 0;
+			return name.compareTo(o.name);
 		}
 	}
 }
