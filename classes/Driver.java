@@ -158,8 +158,6 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         jFrame.setVisible(true);
         jFrame.setResizable(false);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         // long taskDueTime = LocalDateTime.of(year, month, day, hour, minute, second).toEpochSecond(ZoneOffset.ofHours(-4)) * 1000;
         addTask("Comp sci assignment 4", "its due wednesday help", new Time(System.currentTimeMillis() + 1000), 1000000000000l, 0.7);
@@ -167,31 +165,42 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         addActivity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b0010000);
         addActivity("Eating", "One meal per day fr", 65800000l, 68400000l, (byte) 0b0010000);
 
-        for (TimeBlock t : schedule) {
-            System.out.println(t);
-        }
-    }
-
     public static void addActivity(String name, String description, long startTime, long endTime, byte daysOfWeek) {
         Activity a = new Activity(name, description, startTime, endTime, daysOfWeek);
         activities.add(a);
         // have to sort after adding to the list
+  
+        activities.sort(null);
     }
 
     public static void addTask(String name, String description, Time dueDate, long length, Double priority) {
         Task t = new Task(name, description, dueDate, length, priority);
         tasks.add(t);
         // have to sort after adding to the list
+
+        tasks.sort(null);
+
+        for (Task t : tasks) {
+            System.out.println("task " + t);
+        }
+        for (Activity a : activities) {
+            System.out.println("activity " + a);
+        }
+        System.out.println("------------------------");
+        sortSchedule((byte) 0b0010000);
+        for (TimeBlock tb : schedule) {
+            System.out.println("schedule " + tb);
+        }
     }
 
-    public void sortSchedule(byte currentDay) {
+    public static void sortSchedule(byte currentDay) {
         schedule.clear();
-        long currentTime = System.currentTimeMillis();
-        long oneHourMillis = 3600000; // One hour in milliseconds
 
         ArrayList<Activity> dayActivities = new ArrayList<>();
+        
         for (Activity a : activities) {
             if ((a.daysOfWeek & currentDay) > 0) {
+                
                 dayActivities.add(a);
             }
         } // Sort activities when adding new activity
@@ -219,21 +228,26 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
                 endTime = dayActivities.get(i).startTime;
             }
 
-            while (tasks.size() > 0 || endTime == startTime) {
+            int offset = 0;
+            while (tasks.size() > 0 && endTime != startTime) {
                 Task task = tasks.get(0);
                 // Task longer than time block
                 if (task.length > endTime - startTime) {
                     task.length -= endTime - startTime;
+                    schedule.add(i * 2 + offset, new Task(task.name, task.description, startTime, endTime, task.dueDate, endTime - startTime, task.priority));
                     startTime = endTime;
-                    schedule.add(i, new Task(task.name, task.description, task.dueDate, endTime - startTime, task.priority));
                 }
 
                 // Task shorter than time block
                 else {
-                    startTime += task.length;
                     tasks.remove(0);
-                    schedule.add(i, task);
+                    task.startTime = startTime;
+                    task.endTime = startTime + task.length;
+                    schedule.add(i * 2 + offset, task);
+                    startTime += task.length;
                 }
+
+                offset++;
             }
         }
     }
