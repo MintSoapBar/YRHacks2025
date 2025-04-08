@@ -178,6 +178,16 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         }
     }
 
+    public void addActivity(String name, String description, long startTime, long endTime, byte daysOfWeek) {
+        activities.add(new Activity(name, description, startTime, endTime, daysOfWeek));
+        // have to sort after adding to the list
+    }
+
+    public void addTask(String name, String description, long dueDate, long length, Double priority) {
+        tasks.add(new Task(name, description, new Time(dueDate), length, priority));
+        // have to sort after adding to the list
+    }
+
     public void sortSchedule(byte currentDay) {
         schedule.clear();
         long currentTime = System.currentTimeMillis();
