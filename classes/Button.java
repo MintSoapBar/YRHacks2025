@@ -27,7 +27,7 @@ public class Button {
         g.drawString(
             text, 
             x + ox + (width - g.getFontMetrics().stringWidth(text)) / 2, 
-            y + oy + (height/2 + g.getFontMetrics().getHeight() / 2)
+            y + oy + (int) (height/2 + g.getFontMetrics().getHeight() * 0.4)
             );
     }
 

@@ -2,11 +2,13 @@ package classes;
 
 import java.util.*;
 import java.awt.*;
+import java.awt.image.*;;
 
 public class Frame {
     int x, y, width, height;
     Color backgroundColor;
     Color borderColor;
+    BufferedImage image;
 
     HashSet<Frame> frames = new HashSet<>();
     HashSet<Button> buttons = new HashSet<>();
@@ -39,6 +41,10 @@ public class Frame {
             g.fillRect(x + ox, y + oy, width, height);
         }
 
+        if (image != null) {
+            g.drawImage(image, x + ox, y + oy, width, height, null);
+        }
+
         if (borderColor != null) {
             g.setColor(borderColor);
             g.drawRect(x + ox, y + oy, width, height);
@@ -55,6 +61,14 @@ public class Frame {
 
     public void render(Graphics g) {
         render(g, 0, 0);
+    }
+
+    public Frame(int x, int y, int width, int height, BufferedImage image) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.image = image;
     }
 
     public Frame(int x, int y, int width, int height, Color backgroundColor, Color borderColor) {
