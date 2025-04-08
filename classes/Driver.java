@@ -240,6 +240,16 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     public void keyTyped(KeyEvent e) {
     }
 
+    public void capScrollOffset(Point scrollOffset) {
+        if (currentTab == 1) {
+            scrollOffset.y = Math2.clamp(scrollOffset.y, -scheduleScrollingFrame.children.size() * (timeBlockGap + timeBlockHeight), 0);
+        } else if (currentTab == 2) {
+            scrollOffset.y = Math2.clamp(scrollOffset.y, -taskListScrollingFrame.children.size() * (taskListGap + taskListHeight), 0);
+        } else if (currentTab == 3) {
+            scrollOffset.y = Math2.clamp(scrollOffset.y, -activityListScrollingFrame.children.size() * (activityListGap + activityListHeight), 0);
+        }
+    }
+
     public void keyPressed(KeyEvent e) {
         int kc = e.getKeyCode();
 
@@ -252,8 +262,10 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
 
         if (kc == KeyEvent.VK_UP && currentTargetScrollOffset != null) {
             currentTargetScrollOffset.y += 50;
+            capScrollOffset(currentTargetScrollOffset);
         } else if (kc == KeyEvent.VK_DOWN && currentTargetScrollOffset != null) {
             currentTargetScrollOffset.y -= 50;
+            capScrollOffset(currentTargetScrollOffset);
         } else if (kc == KeyEvent.VK_LEFT) {
             currentTab = (currentTab - 1 + TABS_NUM) % TABS_NUM;
         } else if (kc == KeyEvent.VK_RIGHT) {
