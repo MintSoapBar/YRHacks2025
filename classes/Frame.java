@@ -70,7 +70,7 @@ public class Frame {
             }
 
             int tx;
-            int ty = y + oy + (int) (height / 2 + g.getFontMetrics().getHeight() * 0.4);
+            int ty = y + oy + (int) (height / 2 + g.getFontMetrics().getHeight() * 0.35);
 
             if (textAlignX == -1) {
                 tx = x + ox;

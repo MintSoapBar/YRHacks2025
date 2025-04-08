@@ -18,10 +18,10 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static int screenWidth = 1000;
     static int screenHeight = 600;
 
-    static int topBarHeight = 20;
+    static int topBarHeight = 30;
 
-    static int tabHeight = 20;
-    static int tabWidth = 80;
+    static int tabHeight = 30;
+    static int tabWidth = 100;
     static int tabGap = 5;
 
     static int timeBlockGap = 10;
@@ -104,6 +104,15 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
 
         tabFrames[currentTab].render(g);
 
+        //topbar background
+        g.setColor(new Color(150, 210, 230));
+        g.fillRect(0, 0, screenWidth, topBarHeight + tabGap + tabHeight);
+
+        //timer
+        g.setColor(new Color(10, 10, 40));
+        g.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        g.drawString(new Time(System.currentTimeMillis())+"", 10, 25);
+
         for (int i = 0; i < TABS_NUM; i++) {
             Button b = tabButtons[i];
             b.backgroundColor = i == currentTab ? new Color(200, 200, 200) : new Color(255, 255, 255);
@@ -156,7 +165,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         tabFrames[3].addChild(activityListScrollingFrame);
 
         // create jframe
-        JFrame jFrame = new JFrame("to-do list");
+        JFrame jFrame = new JFrame("Sto-do");
         Driver panel = new Driver();
         jFrame.add(panel);
         jFrame.pack();
