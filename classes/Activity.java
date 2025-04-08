@@ -1,22 +1,18 @@
 package classes;
 
 public class Activity extends TimeBlock implements Comparable<Activity> {
-	long startTime; // in milliseconds
-	long endTime; // in milliseconds
 	byte daysOfWeek; // 0-6 for Sun-Sat, 7 for all days
 
 	// Constructor
 	public Activity(String name, String description, long startTime, long endTime, byte daysOfWeek) {
-		super(name, description);
-		this.startTime = startTime;
-		this.endTime = endTime;
+		super(name, description, startTime, endTime);
 		this.daysOfWeek = daysOfWeek;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Name: %s%nDescription: %s%nStart Time: %tF %<tT%nEnd Time: %tF %<tT%nDays of Week: %s%n", 
-			name, description, startTime, endTime, Integer.toBinaryString(daysOfWeek));
+		return String.format("Name: %s%nDescription: %s%nStart Time: %02d:%02d%nEnd Time: %02d:%02d%nDays of Week: %s%n", 
+			name, description, startTime / 3600000, startTime / 60000 % 60, endTime / 3600000, endTime / 60000 % 60, Integer.toBinaryString(daysOfWeek));
 	}
 
 	public static void main(String[] args) {

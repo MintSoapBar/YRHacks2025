@@ -59,7 +59,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         for (int i = 0; i < TABS_NUM; i++) {
             Button b = tabButtons[i];
             b.backgroundColor = i == currentTab? new Color(200, 200, 200): new Color(255, 255, 255);
-            System.out.println(i + " " + b.backgroundColor.getRed());
+            // System.out.println(i + " " + b.backgroundColor.getRed());
             b.render(g);
         }
         
@@ -109,43 +109,44 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         jFrame.setVisible(true);
         jFrame.setResizable(false);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    
         taskGroups.add(new TaskGroup("Chem Lab", "Design a lab", new Time(System.currentTimeMillis() - 1000000), new Time(System.currentTimeMillis() + 10000), 0.8));
 
         // long taskDueTime = LocalDateTime.of(year, month, day, hour, minute, second).toEpochSecond(ZoneOffset.ofHours(-4)) * 1000;
-        taskGroups.get(0).addTask(new Task("Chem Lab", "Graphics", new Time(System.currentTimeMillis() + 1000), 1000000000000l, 0.7));
-        taskGroups.get(0).addTask(new Task("Chem Lab", "Procedure", new Time(System.currentTimeMillis() + 1000), 1000000005464l, 0.8));
-        // System.out.println(taskGroups.get(0).getTask(0));
-        schedule.add(taskGroups.get(0).getTask(0));
-        schedule.add(taskGroups.get(0).getTask(1));
-        activities.add(new Activity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b0010000));
-        tasks.add(taskGroups.get(0).getTask(0));
-        tasks.add(taskGroups.get(0).getTask(1));
+        Task task1 = new Task("Chem Lab", "Graphics", 0, 0, new Time(1744138800000l), 3456000l, 0.7);
+        Task task2 = new Task("Chem Lab", "Procedure", 0, 0, new Time(1744218000000l), 6912000l, 0.8);
 
-        for (TimeBlock t : schedule) {
-            System.out.println(t);
+        tasks.add(task1);
+        tasks.add(task2);
+        
+        // Activities will check if ur doing it in ur sleep
+        activities.add(new Activity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b0010000));
+        activities.add(new Activity("Lunch", "Eat food", 72000000l, 75600000l, (byte) 0b0010000));
+
+        Collections.sort(tasks);
+        Collections.sort(activities);
+
+        for (Task t : tasks) {
+            System.out.println("task " + t);
+        }
+        for (Activity a : activities) {
+            System.out.println("activity " + a);
+        }
+        System.out.println("------------------------");
+        sortSchedule((byte) 0b0010000);
+        for (TimeBlock tb : schedule) {
+            System.out.println("schedule " + tb);
         }
     }
 
-    public void addActivity(String name, String description, long startTime, long endTime, byte daysOfWeek) {
-        activities.add(new Activity(name, description, startTime, endTime, daysOfWeek));
-        // have to sort after adding to the list
-    }
-
-    public void addTask(String name, String description, long dueDate, long length, Double priority) {
-        tasks.add(new Task(name, description, new Time(dueDate), length, priority));
-        // have to sort after adding to the list
-    }
-
-    public void sortSchedule(byte currentDay) {
+    public static void sortSchedule(byte currentDay) {
         schedule.clear();
-        long currentTime = System.currentTimeMillis();
-        long oneHourMillis = 3600000; // One hour in milliseconds
 
         ArrayList<Activity> dayActivities = new ArrayList<>();
+        
         for (Activity a : activities) {
             if ((a.daysOfWeek & currentDay) > 0) {
+                
                 dayActivities.add(a);
             }
         } // Sort activities when adding new activity
@@ -173,21 +174,26 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
                 endTime = dayActivities.get(i).startTime;
             }
 
-            while (tasks.size() > 0 || endTime == startTime) {
+            int offset = 0;
+            while (tasks.size() > 0 && endTime != startTime) {
                 Task task = tasks.get(0);
                 // Task longer than time block
                 if (task.length > endTime - startTime) {
                     task.length -= endTime - startTime;
+                    schedule.add(i * 2 + offset, new Task(task.name, task.description, startTime, endTime, task.dueDate, endTime - startTime, task.priority));
                     startTime = endTime;
-                    schedule.add(i, new Task(task.name, task.description, task.dueDate, endTime - startTime, task.priority));
                 }
 
                 // Task shorter than time block
                 else {
-                    startTime += task.length;
                     tasks.remove(0);
-                    schedule.add(i, task);
+                    task.startTime = startTime;
+                    task.endTime = startTime + task.length;
+                    schedule.add(i * 2 + offset, task);
+                    startTime += task.length;
                 }
+
+                offset++;
             }
         }
     }
