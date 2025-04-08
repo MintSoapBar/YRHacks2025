@@ -28,19 +28,19 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static int timeBlockLeft = 250;
     static int timeBlockWidth = 500;
     static int timeBlockHeight = 100;
-    
+
     static int taskListGap = 10;
     static int taskListLeft = 100;
     static int taskListWidth = 800;
     static int taskListHeight = 70;
-    
+
     static int activityListGap = 10;
     static int activityListLeft = 100;
     static int activityListWidth = 800;
     static int activityListHeight = 70;
 
     static ArrayList<Activity> activities = new ArrayList<>();
-    static ArrayList<Task> tasks = new ArrayList<>(); 
+    static ArrayList<Task> tasks = new ArrayList<>();
     static ArrayList<TimeBlock> schedule = new ArrayList<>();
 
     static long dayStart = 28800000;
@@ -48,7 +48,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static int taskIndex = 0;
 
     static int currentTab = 0;
-    static String[] tabNames = new String[] {"Home", "Schedule", "Task List", "Activity List"};
+    static String[] tabNames = new String[] { "Home", "Schedule", "Task List", "Activity List" };
     static Button[] tabButtons = new Button[TABS_NUM];
     static Frame[] tabFrames = new Frame[TABS_NUM];
 
@@ -59,57 +59,58 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static BufferedImage[] backgrounds = new BufferedImage[2];
 
     public void run() {
-        while(true) {
+        while (true) {
             repaint();
             try {
-                Thread.sleep(1000/FPS);
+                Thread.sleep(1000 / FPS);
+            } catch (Exception e) {
             }
-            catch(Exception e) {}
         }
     }
 
-public static void refreshScheduleButtons() {
-    scheduleScrollingFrame.children.clear();
+    public static void refreshButtons() {
+        scheduleScrollingFrame.children.clear();
 
-    for (int i = 0; i < schedule.size(); i++) {
-        TimeBlock tb = schedule.get(i);
-        Button b = tb.scheduleButton;
-        b.y = 10 + i * (timeBlockGap + timeBlockHeight);
-        scheduleScrollingFrame.children.add(b);
-    }
-}
+        for (int i = 0; i < schedule.size(); i++) {
+            TimeBlock tb = schedule.get(i);
+            Button b = tb.scheduleButton;
+            b.y = timeBlockGap + i * (timeBlockGap + timeBlockHeight);
+            scheduleScrollingFrame.addChild(b);
+        }
 
-    public static void updateTaskListButtons() {
         tasks.sort(null);
+        taskListScrollingFrame.children.clear();
         for (int i = 0; i < tasks.size(); i++) {
             Task t = tasks.get(i);
-            t.taskListButton.y = 10 + i * (taskListGap + taskListHeight);
+            Button b = t.taskListButton;
+            b.y = taskListGap + i * (taskListGap + taskListHeight);
+            taskListScrollingFrame.addChild(b);
         }
-    }
 
-    public static void updateActivityListButtons() {
         activities.sort(null);
+        activityListScrollingFrame.children.clear();
         for (int i = 0; i < activities.size(); i++) {
             Activity a = activities.get(i);
-            a.activityListButton.y = 10 + i * (activityListGap + activityListHeight);
+            Button b = a.activityListButton;
+            b.y = activityListGap + i * (activityListGap + activityListHeight);
+            activityListScrollingFrame.addChild(b);
         }
     }
 
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        updateTaskListButtons();
-        updateActivityListButtons();
 
         tabFrames[currentTab].render(g);
 
         for (int i = 0; i < TABS_NUM; i++) {
             Button b = tabButtons[i];
-            b.backgroundColor = i == currentTab? new Color(200, 200, 200): new Color(255, 255, 255);
+            b.backgroundColor = i == currentTab ? new Color(200, 200, 200) : new Color(255, 255, 255);
             b.render(g);
         }
-        
-        Point mousePos = getMousePosition();
+
+        for (Task t: tasks) {
+            System.out.println(t.name);
+        }
     }
 
     public Driver() {
@@ -130,31 +131,33 @@ public static void refreshScheduleButtons() {
         }
 
         for (int i = 0; i < TABS_NUM; i++) {
-            tabButtons[i] = new Button(tabGap + i*(tabWidth + tabGap), topBarHeight + tabGap, tabWidth, tabHeight, tabNames[i]);
-            tabFrames[i] = new Frame(0, topBarHeight + tabHeight + tabGap, screenWidth, screenHeight - tabHeight, backgrounds[i%2]);
+            tabButtons[i] = new Button(tabGap + i * (tabWidth + tabGap), topBarHeight + tabGap, tabWidth, tabHeight,
+                    tabNames[i]);
+            tabFrames[i] = new Frame(0, topBarHeight + tabHeight + tabGap, screenWidth, screenHeight - tabHeight,
+                    backgrounds[i % 2]);
         }
 
-        //Home screen
+        // Home screen
         Frame welcomeFrame = new Frame(400, 200, 200, 100, new Color(255, 255, 255), "Welcome!");
         welcomeFrame.textFont = new Font("Times New Roman", Font.BOLD, 20);
         tabFrames[0].addChild(welcomeFrame);
 
-        //schedule
+        // schedule
         scheduleScrollingFrame = new Frame(0, 0, screenWidth, screenHeight - tabHeight);
         scheduleScrollingFrame.isScrollingFrame = true;
         tabFrames[1].addChild(scheduleScrollingFrame);
 
-        //task list
+        // task list
         taskListScrollingFrame = new Frame(0, 0, screenWidth, screenHeight - tabHeight);
         taskListScrollingFrame.isScrollingFrame = true;
         tabFrames[2].addChild(taskListScrollingFrame);
 
-        //activity list
+        // activity list
         activityListScrollingFrame = new Frame(0, 0, screenWidth, screenHeight - tabHeight);
         activityListScrollingFrame.isScrollingFrame = true;
         tabFrames[3].addChild(activityListScrollingFrame);
-        
-        //create jframe
+
+        // create jframe
         JFrame jFrame = new JFrame("to-do list");
         Driver panel = new Driver();
         jFrame.add(panel);
@@ -163,17 +166,19 @@ public static void refreshScheduleButtons() {
         jFrame.setResizable(false);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // long taskDueTime = LocalDateTime.of(year, month, day, hour, minute, second).toEpochSecond(ZoneOffset.ofHours(-4)) * 1000;
-        tasks.add(new Task("Comp sci assignment 4", "its due wednesday help", 0, 0, new Time(1744138800000l), 3456000l, 0.7));
+        // long taskDueTime = LocalDateTime.of(year, month, day, hour, minute,
+        // second).toEpochSecond(ZoneOffset.ofHours(-4)) * 1000;
+        tasks.add(new Task("Comp sci assignment 4", "its due wednesday help", 0, 0, new Time(1744138800000l), 3456000l,
+                0.7));
         tasks.add(new Task("Chem Lab", "Procedure will annihilate me", 0, 0, new Time(1744218000000l), 6912000l, 0.8));
         tasks.add(new Task("Math assignment 3", "Due on Friday", 0, 0, new Time(1744304400000l), 86400000l, 0.6));
         activities.add(new Activity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b0010000));
         activities.add(new Activity("Eating", "One meal per day fr", 72000000l, 75600000l, (byte) 0b0010000));
 
         sortSchedule((byte) 0b0010000);
-        refreshScheduleButtons();
+        refreshButtons();
 
-        for (TimeBlock tb: schedule) {
+        for (TimeBlock tb : schedule) {
             System.out.println(tb);
         }
     }
@@ -182,10 +187,10 @@ public static void refreshScheduleButtons() {
         schedule.clear();
 
         ArrayList<Activity> dayActivities = new ArrayList<>();
-        
+
         for (Activity a : activities) {
             if ((a.daysOfWeek & currentDay) > 0) {
-                
+
                 dayActivities.add(a);
             }
         } // Sort activities when adding new activity
@@ -203,24 +208,22 @@ public static void refreshScheduleButtons() {
             long endTime;
             if (i == 0) {
                 startTime = dayStart;
-            }
-            else {
+            } else {
                 startTime = dayActivities.get(i - 1).endTime;
             }
             if (i == dayActivities.size()) {
                 endTime = dayEnd;
-            }
-            else {
+            } else {
                 endTime = dayActivities.get(i).startTime;
             }
 
-            
             while (tasks.size() > taskIndex && endTime != startTime) {
                 Task task = tasks.get(taskIndex);
                 // Task longer than time block
                 if (task.length - task.timeDone > endTime - startTime) {
                     task.timeDone += endTime - startTime;
-                    schedule.add(scheduleIndex, new Task(task.name, task.description, startTime, endTime, task.dueDate, endTime - startTime, task.priority));
+                    schedule.add(scheduleIndex, new Task(task.name, task.description, startTime, endTime, task.dueDate,
+                            endTime - startTime, task.priority));
                     startTime = endTime;
                 }
 
@@ -239,16 +242,18 @@ public static void refreshScheduleButtons() {
             scheduleIndex++;
         }
     }
-  
-    public void keyTyped(KeyEvent e) {}
-  
+
+    public void keyTyped(KeyEvent e) {
+    }
+
     public void keyPressed(KeyEvent e) {
         int kc = e.getKeyCode();
 
         Point currentTargetScrollOffset = null;
 
-        for (Frame f: tabFrames[currentTab].children) {
-            if (f.isScrollingFrame) currentTargetScrollOffset = f.targetScrollOffset;
+        for (Frame f : tabFrames[currentTab].children) {
+            if (f.isScrollingFrame)
+                currentTargetScrollOffset = f.targetScrollOffset;
         }
 
         if (kc == KeyEvent.VK_UP && currentTargetScrollOffset != null) {
@@ -262,15 +267,21 @@ public static void refreshScheduleButtons() {
         }
     }
 
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+    }
 
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+    }
 
-    public void mousePressed(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {
+    }
 
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {
+    }
 
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+    }
 
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {
+    }
 }

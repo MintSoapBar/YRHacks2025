@@ -1,6 +1,7 @@
 package classes;
 
 import java.awt.*;
+import java.time.format.DateTimeFormatter;
 
 public class Task extends TimeBlock implements Comparable<Task> {
     Time dueDate;
@@ -14,11 +15,15 @@ public class Task extends TimeBlock implements Comparable<Task> {
         scheduleButton = new Button(Driver.timeBlockLeft, Driver.taskListGap, Driver.timeBlockWidth, Driver.timeBlockHeight, new Color(255, 255, 255), name);
         Driver.scheduleScrollingFrame.addChild(scheduleButton);
 
-        taskListButton = new Button(Driver.taskListLeft, Driver.taskListGap, Driver.taskListWidth, Driver.taskListHeight, new Color(255, 255, 255));
+        taskListButton = new Button(
+            Driver.taskListLeft, 
+            Driver.taskListGap, 
+            Driver.taskListWidth, 
+            Driver.taskListHeight, 
+            new Color(255, 255, 255),
+            name + " - " + dueDate.date.format(DateTimeFormatter.RFC_1123_DATE_TIME)
+            );
         Driver.taskListScrollingFrame.addChild(taskListButton);
-        Frame titlelabel = new Frame(10, 0, 0, Driver.taskListHeight, name);
-        titlelabel.textAlignX = -1;
-        taskListButton.addChild(titlelabel);
     }
 
     public Task(String name, String description, long startTime, long endTime, Time dueDate, long length, Double priority) {

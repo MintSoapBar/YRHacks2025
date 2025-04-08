@@ -34,7 +34,6 @@ public class Activity extends TimeBlock implements Comparable<Activity> {
 			new Color(255, 255, 255), 
 			name + " - " + byteToDays(daysOfWeek) + " - " + startTime + " " + endTime
 			);
-        Driver.activityListScrollingFrame.addChild(activityListButton);
     }
 
 	// Constructor
