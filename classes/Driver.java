@@ -14,7 +14,8 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static int screenWidth = 400;
     static int screenHeight = 600;
 
-    static int scrollOffset = 0;
+    static int scrollOffsetX = 0;
+    static int scrollOffsetY = 0;
 
     static ArrayList<TaskGroup> taskGroups = new ArrayList<>();
 
@@ -38,7 +39,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
       
         g.drawString(System.currentTimeMillis() + "", 10, 25);
 
-        mainFrame.render(g, 0, scrollOffset);
+        mainFrame.render(g, scrollOffsetX, scrollOffsetY);
         f1.x = (int) (System.currentTimeMillis()/10 % 100 + 10);
         
         int x = 0;
@@ -86,9 +87,9 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         int kc = e.getKeyCode();
 
         if (kc == KeyEvent.VK_UP) {
-            scrollOffset -= 10;
+            scrollOffsetY -= 10;
         } else if (kc == KeyEvent.VK_DOWN) {
-            scrollOffset += 10;
+            scrollOffsetY += 10;
         }
     }
 
