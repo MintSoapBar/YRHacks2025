@@ -48,7 +48,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static int taskIndex = 0;
 
     static int currentTab = 0;
-    static String[] tabNames = new String[] { "Home", "Schedule", "Task List", "Activity List" };
+    static String[] tabNames = new String[] {"Home", "Schedule", "Task List", "Activity List", "Add Task"};
     static Button[] tabButtons = new Button[TABS_NUM];
     static Frame[] tabFrames = new Frame[TABS_NUM];
 
@@ -145,9 +145,24 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         }
 
         // Home screen
-        Frame welcomeFrame = new Frame(400, 200, 200, 100, new Color(255, 255, 255), "Welcome!");
+        Frame welcomeFrame = new Frame(400, 50, 200, 50, new Color(255, 255, 255), "Welcome!");
         welcomeFrame.textFont = new Font("Times New Roman", Font.BOLD, 20);
         tabFrames[0].addChild(welcomeFrame);
+
+        Frame notif1 = new Frame(200, 120, 600, 40, new Color(255, 255, 255), "'Comp sci assignment 4' is due: several hours ago");
+        tabFrames[0].addChild(notif1);
+
+        Frame notif2 = new Frame(200, 170, 600, 40, new Color(255, 255, 255), "'Chem lab' is due: several hours ago");
+        tabFrames[0].addChild(notif2);
+        
+        Frame notif3 = new Frame(200, 220, 600, 40, new Color(255, 255, 255), "'Math assignment 3' is due: in 9 minutes");
+        tabFrames[0].addChild(notif3);
+
+        Frame notif4 = new Frame(200, 270, 600, 40, new Color(255, 255, 255), "'obtaining vitamin d' will occur: in two hours");
+        tabFrames[0].addChild(notif4);
+        
+        Frame msgNotif = new Frame(300, 450, 400, 30, new Color(255, 255, 255), "Consider increasing your work efficiency by 792,000.00%");
+        tabFrames[0].addChild(msgNotif);
 
         // schedule
         scheduleScrollingFrame = new Frame(0, 0, screenWidth, screenHeight - tabHeight);

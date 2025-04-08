@@ -16,7 +16,7 @@ public class Duration {
     String textShort;
 
     public void setTime(long t) {
-        time = t;
+        time = Math.abs(t);
 
         if (time < minute) {
             textLong = time/second + " second" + (time >= 2*second || time < second? "s": "");
@@ -40,6 +40,8 @@ public class Duration {
             textLong = time/year + " year" + (time >= 2*year? "s": "");
             textShort = time/year + "yr.";
         }
+
+        if (t < 0) textLong += " ago";
     }
 
     public Duration(long t) {
@@ -47,6 +49,10 @@ public class Duration {
     }
 
     public static void main(String[] args) {
+        System.out.println(new Duration(-123));
+        System.out.println(new Duration(-1234));
+        System.out.println(new Duration(-12345));
+
         System.out.println(new Duration(123));
         System.out.println(new Duration(1234));
         System.out.println(new Duration(12345));
