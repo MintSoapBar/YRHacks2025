@@ -67,10 +67,14 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         }
     }
 
-    public static void updateScheduleButtons() {
+    public static void refreshScheduleButtons() {
+        scheduleScrollingFrame.children.clear();
+
         for (int i = 0; i < schedule.size(); i++) {
             TimeBlock tb = schedule.get(i);
-            tb.scheduleButton.y = 10 + i * (timeBlockGap + timeBlockHeight);
+            Button b = tb.scheduleButton;
+            b.y = 10 + i * (timeBlockGap + timeBlockHeight);
+            scheduleScrollingFrame.children.add(b);
         }
     }
 
@@ -93,7 +97,10 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        updateScheduleButtons();
+        System.out.println(tasks.size() + " " + activities.size());
+
+        sortSchedule((byte) 0b0010000);
+        refreshScheduleButtons();
         updateTaskListButtons();
         updateActivityListButtons();
 
@@ -223,10 +230,6 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
                 offset++;
             }
         }
-    }
-
-    public static void refreshScheduleButtons() {
-        scheduleScrollingFrame.children.clear();
     }
   
     public void keyTyped(KeyEvent e) {}
