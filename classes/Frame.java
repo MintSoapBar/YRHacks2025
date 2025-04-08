@@ -15,6 +15,7 @@ public class Frame {
     String text;
     Font textFont;
     Color textColor;
+    int textAlignX = 0;
 
     BufferedImage image;
 
@@ -67,10 +68,17 @@ public class Frame {
             } else {
                 g.setFont(new Font("Times New Roman", Font.PLAIN, 15));
             }
-            g.drawString(
-                    text,
-                    x + ox + (width - g.getFontMetrics().stringWidth(text)) / 2,
-                    y + oy + (int) (height / 2 + g.getFontMetrics().getHeight() * 0.4));
+
+            int tx;
+            int ty = y + oy + (int) (height / 2 + g.getFontMetrics().getHeight() * 0.4);
+
+            if (textAlignX == -1) {
+                tx = x + ox;
+            } else {
+                tx = x + ox + (width - g.getFontMetrics().stringWidth(text)) / 2;
+            }
+
+            g.drawString(text, tx, ty);
         }
 
         for (Frame c: children) {
