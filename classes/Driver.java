@@ -160,37 +160,10 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // long taskDueTime = LocalDateTime.of(year, month, day, hour, minute, second).toEpochSecond(ZoneOffset.ofHours(-4)) * 1000;
-        addTask("Comp sci assignment 4", "its due wednesday help", new Time(System.currentTimeMillis() + 1000), 1000000000000l, 0.7);
-        addTask("Chem Lab", "Procedure will annihilate me", new Time(System.currentTimeMillis() + 1000), 1000000005464l, 0.8);
-        addActivity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b0010000);
-        addActivity("Eating", "One meal per day fr", 65800000l, 68400000l, (byte) 0b0010000);
-
-    public static void addActivity(String name, String description, long startTime, long endTime, byte daysOfWeek) {
-        Activity a = new Activity(name, description, startTime, endTime, daysOfWeek);
-        activities.add(a);
-        // have to sort after adding to the list
-  
-        activities.sort(null);
-    }
-
-    public static void addTask(String name, String description, Time dueDate, long length, Double priority) {
-        Task t = new Task(name, description, dueDate, length, priority);
-        tasks.add(t);
-        // have to sort after adding to the list
-
-        tasks.sort(null);
-
-        for (Task t : tasks) {
-            System.out.println("task " + t);
-        }
-        for (Activity a : activities) {
-            System.out.println("activity " + a);
-        }
-        System.out.println("------------------------");
-        sortSchedule((byte) 0b0010000);
-        for (TimeBlock tb : schedule) {
-            System.out.println("schedule " + tb);
-        }
+        new Task("Comp sci assignment 4", "its due wednesday help", 0, 0, new Time(System.currentTimeMillis() + 1000), 1000000000000l, 0.7);
+        new Task("Chem Lab", "Procedure will annihilate me", 0, 0, new Time(System.currentTimeMillis() + 1000), 1000000005464l, 0.8);
+        new Activity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b0010000);
+        new Activity("Eating", "One meal per day fr", 65800000l, 68400000l, (byte) 0b0010000);
     }
 
     public static void sortSchedule(byte currentDay) {
@@ -250,6 +223,10 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
                 offset++;
             }
         }
+    }
+
+    public static void refreshScheduleButtons() {
+        scheduleScrollingFrame.children.clear();
     }
   
     public void keyTyped(KeyEvent e) {}
