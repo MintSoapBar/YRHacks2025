@@ -177,10 +177,6 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
 
         sortSchedule((byte) 0b0010000);
         refreshButtons();
-
-        for (TimeBlock tb : schedule) {
-            System.out.println(tb);
-        }
     }
 
     public static void sortSchedule(byte currentDay) {
