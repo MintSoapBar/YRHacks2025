@@ -1,7 +1,7 @@
 package classes;
 
 import java.awt.*;
-import java.awt.image.*;;
+import java.awt.image.*;
 
 public class Button extends Frame {
     Frame parent;
