@@ -19,8 +19,8 @@ public class Task extends TimeBlock implements Comparable<Task> {
 
     public int compareTo(Task task) {
         if (System.currentTimeMillis() - dueDate.time > 0) {
-            return 1; // this task is overdue
+            return -1; // this task is overdue
         }
-        return Double.compare(((System.currentTimeMillis() - this.dueDate.time) / this.priority), ((System.currentTimeMillis() - task.dueDate.time) / task.priority));
+        return -Double.compare(((System.currentTimeMillis() - this.dueDate.time) / this.priority), ((System.currentTimeMillis() - task.dueDate.time) / task.priority));
     }
 }
