@@ -2,16 +2,21 @@ package classes;
 
 public class Task {
     String name;
+    String description;
     Time dueDate;
     long length;
-    String description;
     Double priority;
 
-    public Task(String name, Time dueDate, String description, Double priority) {
+    public Task(String name, String description, Time dueDate, Double priority) {
         this.name = name;
+        this.description = description;
         this.dueDate = dueDate;
         this.length = dueDate.time - System.currentTimeMillis();
-        this.description = description;
         this.priority = priority;
+    }
+
+    public String toString() {
+        return String.format("Name: %s%nDescription: %s%nDue Date: %s%nLength: %d%nPriority: %f%n", 
+            name, description, dueDate, length, priority);
     }
 }

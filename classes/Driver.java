@@ -20,9 +20,10 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
     static Schedule schedule = new Schedule();
     static ArrayList<TaskGroup> taskGroups = new ArrayList<>();
 
+    static ArrayList<Task> schedule = new ArrayList<>(); 
+
     static Frame mainFrame = new Frame(0, 0, screenWidth, screenHeight);
     static Button b1;
-
     static Frame f1;
 
     public void run() {

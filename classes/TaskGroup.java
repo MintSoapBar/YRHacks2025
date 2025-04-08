@@ -4,18 +4,19 @@ import java.util.ArrayList;
 
 public class TaskGroup {
     String name;
+	String description;
 	ArrayList<Task> tasks = new ArrayList<>();
 	Time startDate;
 	Time dueDate;
 	Double priority;
-	String description;
+	
 
 	// Constructor
-	public TaskGroup(String name, Time startDate, Time dueDate, String description, Double priority) {
+	public TaskGroup(String name, String description, Time startDate, Time dueDate, Double priority) {
 		this.name = name;
+		this.description = description;
 		this.startDate = startDate;
 		this.dueDate = dueDate;
-		this.description = description;
 		this.priority = priority;
 	}
 
@@ -32,7 +33,11 @@ public class TaskGroup {
 		tasks.remove(task);
 	}
 
+	@Override
 	public String toString() {
-		return String.format("%s%n%s%n%s%n%f%n", name, startDate, dueDate, priority);
+		return String.format(
+			"Task Group: %s%nDescription: %s%nStart Date: %s%nDue Date: %s%nPriority: %.2f%nTasks: %s",
+			name, description, startDate, dueDate, priority, tasks
+		);
 	}
 }
