@@ -1,15 +1,12 @@
 package classes;
 
-public class Task implements Comparable<Task> {
-    String name;
-    String description;
+public class Task extends TimeBlock implements Comparable<Task> {
     Time dueDate;
     long length;
     Double priority;
 
     public Task(String name, String description, Time dueDate, long length, Double priority) {
-        this.name = name;
-        this.description = description;
+        super(name, description);
         this.dueDate = dueDate;
         this.length = length;
         this.priority = priority;
@@ -21,6 +18,9 @@ public class Task implements Comparable<Task> {
     }
 
     public int compareTo(Task task) {
-        return this.priority.compareTo(task.priority);
+        if (System.currentTimeMillis() - dueDate.time > 0) {
+            return 1; // this task is overdue
+        }
+        return Double.compare(((System.currentTimeMillis() - this.dueDate.time) / this.priority), ((System.currentTimeMillis() - task.dueDate.time) / task.priority));
     }
 }
