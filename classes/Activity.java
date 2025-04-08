@@ -26,17 +26,15 @@ public class Activity extends TimeBlock implements Comparable<Activity> {
         scheduleButton = new Button(Driver.timeBlockLeft, Driver.activityListGap, Driver.timeBlockWidth, Driver.timeBlockHeight, new Color(255, 255, 255), name);
         Driver.scheduleScrollingFrame.addChild(scheduleButton);
 
-        activityListButton = new Button(Driver.activityListLeft, Driver.activityListGap, Driver.activityListWidth, Driver.activityListHeight, new Color(255, 255, 255));
+        activityListButton = new Button(
+			Driver.activityListLeft, 
+			Driver.activityListGap, 
+			Driver.activityListWidth, 
+			Driver.activityListHeight, 
+			new Color(255, 255, 255), 
+			name + " - " + byteToDays(daysOfWeek) + " - " + startTime + " " + endTime
+			);
         Driver.activityListScrollingFrame.addChild(activityListButton);
-
-        Frame titleLabel = new Frame(10, 0, 0, Driver.activityListHeight/2, name);
-        titleLabel.textAlignX = -1;
-        activityListButton.addChild(titleLabel);
-
-		Frame dayslabel = new Frame(10, Driver.activityListHeight/2, 0, Driver.activityListHeight/2, byteToDays(daysOfWeek));
-        dayslabel.textAlignX = -1;
-        activityListButton.addChild(dayslabel);
-
     }
 
 	// Constructor
