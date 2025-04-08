@@ -42,4 +42,8 @@ public class Time implements Comparable<Time> {
     public int compareTo(Time o) {
         return (int) (time - o.time);
     }
+    
+    public static String interpretLong(long time) {
+        return String.format("%02d:%02d:%02d", time / 3600000, (time / 60000) % 60, (time / 1000) % 60);
+    }
 }
