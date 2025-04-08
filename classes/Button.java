@@ -3,8 +3,8 @@ import java.awt.*;
 
 public class Button {
     int x, y, width, height;
-    Color backgroundColor;
-    Color borderColor;
+    Color backgroundColor = new Color(255, 255, 255);
+    Color borderColor = new Color(0, 0, 0);
     String text;
 
     Frame parent;
@@ -24,12 +24,11 @@ public class Button {
             g.drawRect(x + ox, y + oy, width, height);
         }
 
-        g.fillRect(x + ox, y + oy, width, height);
-        g.setColor(Color.BLACK);
-
-        g.drawRect(x + ox, y + oy, width, height);
-
-        g.drawString(text, x + ox + (width - g.getFontMetrics().stringWidth(text)) / 2, y + oy + (height + g.getFontMetrics().getHeight()) / 2 - 5);
+        g.drawString(
+            text, 
+            x + ox + (width - g.getFontMetrics().stringWidth(text)) / 2, 
+            y + oy + (height/2 + g.getFontMetrics().getHeight() / 2)
+            );
     }
 
     public void render(Graphics g) {

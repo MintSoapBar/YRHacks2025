@@ -53,7 +53,9 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
             f.x = (int) (System.currentTimeMillis() % 1000 / 10 + 10);
         }
 
-        for (Button b: tabButtons) {
+        for (int i = 0; i < TABS_NUM; i++) {
+            Button b = tabButtons[i];
+            b.backgroundColor = i == currentTab? new Color(200, 200, 200): new Color(255, 255, 255);
             b.render(g);
         }
         
