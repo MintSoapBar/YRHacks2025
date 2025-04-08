@@ -110,7 +110,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
 
         //timer
         g.setColor(new Color(10, 10, 40));
-        g.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        g.setFont(new Font("Open Sans", Font.BOLD, 20));
         g.drawString(new Time(System.currentTimeMillis())+"", 10, 25);
 
         for (int i = 0; i < TABS_NUM; i++) {
@@ -146,7 +146,7 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
 
         // Home screen
         Frame welcomeFrame = new Frame(400, 50, 200, 50, new Color(255, 255, 255), "Welcome!");
-        welcomeFrame.textFont = new Font("Times New Roman", Font.BOLD, 20);
+        welcomeFrame.textFont = new Font("Open Sans", Font.BOLD, 20);
         tabFrames[0].addChild(welcomeFrame);
 
         Frame notif1 = new Frame(200, 120, 600, 40, new Color(255, 255, 255), "Task 'Comp sci assignment 4' is due: several hours ago");

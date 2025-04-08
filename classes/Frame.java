@@ -66,7 +66,7 @@ public class Frame {
             if (textFont != null) {
                 g.setFont(textFont);
             } else {
-                g.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+                g.setFont(new Font("Open Sans", Font.PLAIN, 15));
             }
 
             int tx;
