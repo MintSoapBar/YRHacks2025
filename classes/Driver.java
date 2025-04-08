@@ -167,8 +167,8 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         // long taskDueTime = LocalDateTime.of(year, month, day, hour, minute, second).toEpochSecond(ZoneOffset.ofHours(-4)) * 1000;
         tasks.add(new Task("Comp sci assignment 4", "its due wednesday help", 0, 0, new Time(1744138800000l), 3456000l, 0.7));
         tasks.add(new Task("Chem Lab", "Procedure will annihilate me", 0, 0, new Time(1744218000000l), 6912000l, 0.8));
-        activities.add(new Activity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b0010000));
-        activities.add(new Activity("Eating", "One meal per day fr", 72000000l, 75600000l, (byte) 0b0010000));
+        activities.add(new Activity("Swimming", "Swim Apex Fitness", 64800000l, 68400000l, (byte) 0b10010000));
+        activities.add(new Activity("Eating", "One meal per day fr", 72000000l, 75600000l, (byte) 0b10010000));
     }
 
     public static void sortSchedule(byte currentDay) {
