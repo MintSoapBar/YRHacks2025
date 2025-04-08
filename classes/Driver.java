@@ -179,6 +179,10 @@ public class Driver extends JPanel implements MouseListener, KeyListener, Runnab
         activityListScrollingFrame.isScrollingFrame = true;
         tabFrames[3].addChild(activityListScrollingFrame);
 
+        //add task
+        // Frame addTaskNameLabel = new Frame(0, 0, screenWidth, screenHeight - tabHeight);
+        // tabFrames[3].addChild(activityListScrollingFrame);
+
         // create jframe
         JFrame jFrame = new JFrame("Sto-do");
         Driver panel = new Driver();
