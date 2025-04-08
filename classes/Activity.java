@@ -7,15 +7,33 @@ public class Activity extends TimeBlock implements Comparable<Activity> {
 	
     Button activityListButton;
 
+	static String[] days = new String[] {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+
+	public String byteToDays(byte b) {
+		String s = "";
+
+		for (int i = 0; i < 7; i++) {
+			if (((1 << (7 - i)) & b) > 0) {
+				if (s.length() > 0) s += "/";
+				s += days[i];
+			}
+		}
+
+		return s;
+	}
+
 	public void createButtons() {
         scheduleButton = new Button(Driver.timeBlockLeft, Driver.activityListGap, Driver.timeBlockWidth, Driver.timeBlockHeight, new Color(255, 255, 255), name);
         Driver.scheduleScrollingFrame.addChild(scheduleButton);
 
-        activityListButton = new Button(Driver.activityListLeft, Driver.activityListGap, Driver.activityListWidth, Driver.activityListHeight, new Color(255, 255, 255));
-        Driver.activityListScrollingFrame.addChild(activityListButton);
-        Frame titlelabel = new Frame(10, 0, 0, Driver.activityListHeight, name);
-        titlelabel.textAlignX = -1;
-        activityListButton.addChild(titlelabel);
+        activityListButton = new Button(
+			Driver.activityListLeft, 
+			Driver.activityListGap, 
+			Driver.activityListWidth, 
+			Driver.activityListHeight, 
+			new Color(255, 255, 255), 
+			name + " - " + byteToDays(daysOfWeek) + " - " + startTime + "-" + endTime
+			);
     }
 
 	// Constructor
